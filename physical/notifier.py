@@ -3,10 +3,10 @@ import time
 
 
 class Notifier:
-    def __init__(self, buzz_pin, led_pin, led_pin2):
-        self.beeper = buzz_pin
-        self.led_green = led_pin
-        self.led_red = led_pin2
+    def __init__(self, output):
+        self.beeper = output["buzzer"]
+        self.led_green = output["green_led"]
+        self.led_red = output["red_led"]
         GPIO.setup(self.beeper, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.led_green, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.led_red, GPIO.OUT, initial=GPIO.LOW)

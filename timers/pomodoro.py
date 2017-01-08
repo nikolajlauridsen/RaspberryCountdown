@@ -12,22 +12,26 @@ class PomodoroTimer(CountDown):
         # Inherit from countdown timer
         super().__init__()
 
+        # And flags
+        self.cycle = 1
+        self.pomodoro_running = True
+        self.next_cycle = True
+        self.debug = debug
+
         # Initialize object
         self.screen = screen
         self.buttons = buttons
         self.notify = notifier
         self.calendar = EventCreator()
+
         # And integers
-        if debug: minute_multiplier = 1
-        else: minute_multiplier = 60
+        if self.debug:
+            minute_multiplier = 1
+        else:
+            minute_multiplier = 60
         self.study_t = study_length * minute_multiplier
         self.short_break = short_break * minute_multiplier
         self.long_break = long_break * minute_multiplier
-
-        # And flags
-        self.cycle = 1
-        self.pomodoro_running = True
-        self.next_cycle = True
 
     def run_timer(self, duration, action):
         """
@@ -99,7 +103,9 @@ class PomodoroTimer(CountDown):
                     self.start_break(False)
                 else:
                     break
+        self.finish_session(session_start)
 
+    def finish_session(self, session_start):
         # Session over TODO: make calendar event
         self.notify.clear_leds()
         self.screen.lcd_display_string('Session ended'.center(16, ' '), 1)
@@ -109,11 +115,12 @@ class PomodoroTimer(CountDown):
         self.screen.lcd_display_string('Creating'.center(16, ' '), 1)
         self.screen.lcd_display_string('calendar event'.center(16, ' '), 2)
         session_end = time.time()
-        self.calendar.create_event('Pomodoro study session', session_start,
-                                   session_end)
+        if not self.debug:
+            self.calendar.create_event('Pomodoro study session', session_start,
+                                       session_end)
 
         self.screen.lcd_display_string('Session saved'.center(16, ' '), 1)
-        self.screen.lcd_display_string(' '*16, 2)
+        self.screen.lcd_display_string(' ' * 16, 2)
         time.sleep(0.5)
         print('Session finished')
 
