@@ -16,8 +16,8 @@ class PomodoroTimer(CountDown):
         self.buttons = buttons
         self.notify = notifier
         # And integers
-        if debug: minute_multiplier = 60
-        else: minute_multiplier = 1
+        if debug: minute_multiplier = 1
+        else: minute_multiplier = 60
         self.study_t = study_length * minute_multiplier
         self.short_break = short_break * minute_multiplier
         self.long_break = long_break * minute_multiplier
