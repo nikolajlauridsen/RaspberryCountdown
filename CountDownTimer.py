@@ -15,7 +15,7 @@ buttons = {
 # Output dictionary for notifier (lcd screen has its own class)
 output = {
     'buzzer': 22,
-    'greed_led': 27,
+    'green_led': 27,
     'red_led': 17
 }
 
