@@ -32,6 +32,7 @@ class PomodoroTimer(CountDown):
         """
         self.set_duration(duration)
         self.start()
+        self.screen.lcd_display_string(action.center(16, ' '), 1)
         while not self.check_expired():
             # Detect events
             if GPIO.event_detected(self.buttons['start']):
