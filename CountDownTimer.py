@@ -1,8 +1,10 @@
-import LCD_driver as lcdDriver
-from countdown import CountDown
-from notifier import Notifier
-import RPi.GPIO as GPIO
 import time
+
+import RPi.GPIO as GPIO
+from physical.notifier import Notifier
+
+from physical import LCD_driver as lcdDriver
+from _timers.countdown import CountDown
 
 # Button shorthands
 start_bth = 23

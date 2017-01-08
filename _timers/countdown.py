@@ -3,6 +3,7 @@ precision isn't all that important"""
 import time
 
 class CountDown:
+    """Generic countdown timer class"""
     def __init__(self):
         self.paused = True
         self.start_time = 0
