@@ -25,7 +25,7 @@ class PomodoroTimer(CountDown):
         self.pomodoro_running = True
         self.next_cycle = True
 
-    def run_timer(self, duration):
+    def run_timer(self, duration, action):
         """
         Run a timer
         Returns true if it expired and false if it was stopped
@@ -37,11 +37,12 @@ class PomodoroTimer(CountDown):
             if GPIO.event_detected(self.buttons['start']):
                 if self.paused:
                     self.start()
-                    self.screen.lcd_display_string('Session started '
+                    self.screen.lcd_display_string(action
                                                    .center(16, ' '), 1)
                 else:
                     self.pause()
-                    self.screen.lcd_display_string('Paused'.center(16, ' '), 1)
+                    self.screen.lcd_display_string(action + ' Paused'
+                                                   .center(16, ' '), 1)
             elif GPIO.event_detected(self.buttons['stop']):
                 # Stop the timer, return false, ie, no new cycle
                 return False
@@ -56,29 +57,43 @@ class PomodoroTimer(CountDown):
         self.notify.blink()
         return True
 
+    def start_work(self):
+        # TODO: Switch back to minutes
+        print('Starting study')
+        self.notify.toggle_led(self.notify.led_green, True)
+        self.notify.toggle_led(self.notify.led_red, False)
+        self.next_cycle = self.run_timer(self.study_t * 0, 'Work')
+
+    def start_break(self, short):
+        self.notify.toggle_led(self.notify.led_green, False)
+        self.notify.toggle_led(self.notify.led_red, True)
+        if short:
+            print('Start short break')
+            self.next_cycle = self.run_timer(self.short_break * 0, 'Break')
+            self.cycle += 1
+        else:
+            print('Start long break')
+            self.next_cycle = self.run_timer(self.long_break * 0, 'Break')
+            self.cycle = 1
+
     def run_session(self):
         """Session loop, tracks sessions and start appropriate timers"""
         self.next_cycle = True
         while self.next_cycle:
 
             if self.cycle % 4 != 0:
-                # TODO: convert seconds to minutes (seconds works well for dev)
-                print('Starting study')
-                self.next_cycle = self.run_timer(self.study_t*60)
+                self.start_work()
                 if self.next_cycle:
-                    print('Start short break')
-                    self.next_cycle = self.run_timer(self.short_break*60)
-                    self.cycle += 1
-                else: break
+                    self.start_break(True)
+                else:
+                    break
 
             else:
-                print('Starting study')
-                self.next_cycle = self.run_timer(self.study_t*60)
+                self.start_work()
                 if self.next_cycle:
-                    print('Start long break')
-                    self.next_cycle = self.run_timer(self.long_break*60)
-                    self.cycle = 1
-                else: break
+                    self.start_break(False)
+                else:
+                    break
 
         # Session over TODO: make calendar event
         print('Session finished')

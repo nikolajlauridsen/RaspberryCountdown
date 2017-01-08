@@ -33,3 +33,10 @@ class Notifier:
                 GPIO.output(self.led_red, GPIO.HIGH)
                 time.sleep(0.2)
             GPIO.output(self.led_red, GPIO.LOW)
+
+    @staticmethod
+    def toggle_led(led, state):
+        if state:
+            GPIO.output(led, GPIO.HIGH)
+        else:
+            GPIO.output(led, GPIO.LOW)
