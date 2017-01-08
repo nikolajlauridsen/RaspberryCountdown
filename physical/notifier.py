@@ -40,3 +40,7 @@ class Notifier:
             GPIO.output(led, GPIO.HIGH)
         else:
             GPIO.output(led, GPIO.LOW)
+
+    def clear_leds(self):
+        GPIO.output(self.led_green, GPIO.LOW)
+        GPIO.output(self.led_red, GPIO.LOW)

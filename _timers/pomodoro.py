@@ -98,6 +98,10 @@ class PomodoroTimer(CountDown):
                     break
 
         # Session over TODO: make calendar event
+        self.screen.lcd_display_string('Session ended'.center(16, ' '), 1)
+        self.screen.lcd_display_string(' ' * 16, 2)
+        time.sleep(0.5)
+        self.notify.clear_leds()
         print('Session finished')
 
     def main(self):
