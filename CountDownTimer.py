@@ -2,7 +2,7 @@ import time
 
 import RPi.GPIO as GPIO
 
-from _timers.pomodoro import PomodoroTimer
+from timers.pomodoro import PomodoroTimer
 from physical.notifier import Notifier
 from physical import LCD_driver as lcdDriver
 
