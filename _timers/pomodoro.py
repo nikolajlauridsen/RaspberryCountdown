@@ -7,7 +7,7 @@ class PomodoroTimer(CountDown):
     """Pomodoro timer object"""
 
     def __init__(self, screen, notifier, buttons, study_length=25,
-                 short_break=5, long_break=20):
+                 short_break=5, long_break=20, debug=False):
         # Inherit from countdown timer
         super().__init__()
 
@@ -16,9 +16,11 @@ class PomodoroTimer(CountDown):
         self.buttons = buttons
         self.notify = notifier
         # And integers
-        self.study_t = study_length
-        self.short_break = short_break
-        self.long_break = long_break
+        if debug: minute_multiplier = 60
+        else: minute_multiplier = 1
+        self.study_t = study_length * minute_multiplier
+        self.short_break = short_break * minute_multiplier
+        self.long_break = long_break * minute_multiplier
 
         # And flags
         self.cycle = 1
@@ -59,22 +61,21 @@ class PomodoroTimer(CountDown):
         return True
 
     def start_work(self):
-        # TODO: Switch back to minutes
         print('Starting study')
         self.notify.toggle_led(self.notify.led_green, True)
         self.notify.toggle_led(self.notify.led_red, False)
-        self.next_cycle = self.run_timer(self.study_t * 1, 'Work')
+        self.next_cycle = self.run_timer(self.study_t, 'Work')
 
     def start_break(self, short):
         self.notify.toggle_led(self.notify.led_green, False)
         self.notify.toggle_led(self.notify.led_red, True)
         if short:
             print('Start short break')
-            self.next_cycle = self.run_timer(self.short_break * 1, 'Break')
+            self.next_cycle = self.run_timer(self.short_break, 'Break')
             self.cycle += 1
         else:
             print('Start long break')
-            self.next_cycle = self.run_timer(self.long_break * 1, 'Break')
+            self.next_cycle = self.run_timer(self.long_break, 'Break')
             self.cycle = 1
 
     def run_session(self):
