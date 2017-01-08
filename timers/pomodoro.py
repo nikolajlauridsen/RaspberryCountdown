@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 from .countdown import CountDown
+from web.google_calendar import EventCreator
 
 
 class PomodoroTimer(CountDown):
@@ -15,6 +16,7 @@ class PomodoroTimer(CountDown):
         self.screen = screen
         self.buttons = buttons
         self.notify = notifier
+        self.calendar = EventCreator()
         # And integers
         if debug: minute_multiplier = 1
         else: minute_multiplier = 60
@@ -80,6 +82,7 @@ class PomodoroTimer(CountDown):
 
     def run_session(self):
         """Session loop, tracks sessions and start appropriate timers"""
+        session_start = time.time()
         self.next_cycle = True
         while self.next_cycle:
 
@@ -98,10 +101,20 @@ class PomodoroTimer(CountDown):
                     break
 
         # Session over TODO: make calendar event
+        self.notify.clear_leds()
         self.screen.lcd_display_string('Session ended'.center(16, ' '), 1)
         self.screen.lcd_display_string(' ' * 16, 2)
         time.sleep(0.5)
-        self.notify.clear_leds()
+
+        self.screen.lcd_display_string('Creating'.center(16, ' '), 1)
+        self.screen.lcd_display_string('calendar event'.center(16, ' '), 2)
+        session_end = time.time()
+        self.calendar.create_event('Pomodoro study session', session_start,
+                                   session_end)
+
+        self.screen.lcd_display_string('Session saved'.center(16, ' '), 1)
+        self.screen.lcd_display_string(' '*16, 2)
+        time.sleep(0.5)
         print('Session finished')
 
     def main(self):

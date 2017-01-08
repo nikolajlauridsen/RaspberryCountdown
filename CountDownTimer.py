@@ -24,7 +24,7 @@ GPIO.add_event_detect(buttons['stop'], GPIO.RISING)
 # Initialize objects
 screen = lcdDriver.lcd()
 notifier = Notifier(22, 27, 17)
-pomodoro = PomodoroTimer(screen, notifier, buttons, debug=True)
+pomodoro = PomodoroTimer(screen, notifier, buttons, debug=False)
 
 pomodoro.main()
 
