@@ -6,13 +6,18 @@ from timers.pomodoro import PomodoroTimer
 from physical.notifier import Notifier
 from physical import LCD_driver as lcdDriver
 
-# Button shorthands
+# Buttons dictionary
 buttons = {
     'start': 23,
     'stop': 24
 }
-start_bth = 23
-stop_btn = 24
+
+# Output dictionary for notifier (lcd screen has its own class)
+output = {
+    'buzzer': 22,
+    'greed_led': 27,
+    'red_led': 17
+}
 
 # Set up channels
 GPIO.setmode(GPIO.BCM)
@@ -23,7 +28,7 @@ GPIO.add_event_detect(buttons['stop'], GPIO.RISING)
 
 # Initialize objects
 screen = lcdDriver.lcd()
-notifier = Notifier(22, 27, 17)
+notifier = Notifier(output)
 pomodoro = PomodoroTimer(screen, notifier, buttons, debug=False)
 
 pomodoro.main()
