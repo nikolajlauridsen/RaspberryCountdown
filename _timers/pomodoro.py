@@ -14,7 +14,7 @@ class PomodoroTimer(CountDown):
         self.study_t = study_length
         self.short_break = break_length
 
-        self.cycle = 0
+        self.cycle = 1
         self.long_break = 20
         self.pomodoro_running = True
         self.next_cycle = True
@@ -47,16 +47,20 @@ class PomodoroTimer(CountDown):
         return True
 
     def run_session(self):
-
         while self.next_cycle:
-            if self.cycle % 3 != 0:
+            if self.cycle % 4 != 0:
                 # TODO: convert seconds to minutes (seconds works well for dev)
+                print('Starting study')
                 self.next_cycle = self.run_timer(self.study_t)
+                print('Start short break')
                 self.next_cycle = self.run_timer(self.short_break)
                 self.cycle += 1
             else:
+                print('Starting study')
                 self.next_cycle = self.run_timer(self.study_t)
+                print('Start long break')
                 self.next_cycle = self.run_timer(self.long_break)
+                self.cycle = 1
 
         # Session over TODO: make calendar event
         print('Session finished')
