@@ -62,18 +62,18 @@ class PomodoroTimer(CountDown):
         print('Starting study')
         self.notify.toggle_led(self.notify.led_green, True)
         self.notify.toggle_led(self.notify.led_red, False)
-        self.next_cycle = self.run_timer(self.study_t * 0, 'Work')
+        self.next_cycle = self.run_timer(self.study_t * 1, 'Work')
 
     def start_break(self, short):
         self.notify.toggle_led(self.notify.led_green, False)
         self.notify.toggle_led(self.notify.led_red, True)
         if short:
             print('Start short break')
-            self.next_cycle = self.run_timer(self.short_break * 0, 'Break')
+            self.next_cycle = self.run_timer(self.short_break * 1, 'Break')
             self.cycle += 1
         else:
             print('Start long break')
-            self.next_cycle = self.run_timer(self.long_break * 0, 'Break')
+            self.next_cycle = self.run_timer(self.long_break * 1, 'Break')
             self.cycle = 1
 
     def run_session(self):
