@@ -11,7 +11,7 @@ from oauth2client.file import Storage
 # If modifying these scopes, delete your previously saved credentials
 # at ~/.credentials/calendar-python-quickstart.json
 SCOPES = 'https://www.googleapis.com/auth/calendar'
-CLIENT_SECRET_FILE = 'client_secret.json'
+CLIENT_SECRET_FILE = os.path.join('web', 'client_secret.json')
 APPLICATION_NAME = 'Raspberry LCD pomodoro timer'
 
 
