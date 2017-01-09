@@ -52,7 +52,7 @@ class EventCreator:
         http = credentials.authorize(httplib2.Http())
         self.service = discovery.build('calendar', 'v3', http=http)
 
-    def create_event(self, summary, start, end):
+    def create_event(self, summary, start, end, description=' '):
         # TODO: consider timezones
         start = datetime.datetime.utcfromtimestamp(start).strftime('%Y-%m-%dT%H:%M:%S')
         end = datetime.datetime.utcfromtimestamp(end).strftime('%Y-%m-%dT%H:%M:%S')
@@ -61,6 +61,7 @@ class EventCreator:
 
         event = {
             'summary': summary,
+            'description': description,
             'start': {
                 'dateTime': start,
                 'timeZone': timezone},

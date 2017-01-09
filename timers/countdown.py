@@ -40,3 +40,10 @@ class CountDown:
         mins = (remaining % 3600) // 60
         s = (remaining % 3600) % 60
         return "{:02}:{:02}:{:02}".format(int(hrs), int(mins), int(s))
+
+    @staticmethod
+    def seconds_to_timestamp(seconds):
+        hrs = seconds //3600
+        mins = (seconds % 3600) // 60
+        s = (seconds % 3600) % 60
+        return "{:02}:{:02}:{:02}".format(int(hrs), int(mins), int(s))
