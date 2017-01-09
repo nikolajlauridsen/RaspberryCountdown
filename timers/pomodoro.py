@@ -66,6 +66,16 @@ class PomodoroTimer(CountDown):
         self.notify.blink()
         return True
 
+    def await_confirmation(self, message):
+        """Awaits confirmation from user returns true/false"""
+        self.screen.lcd_display_string(message.center(16, ' '), 1)
+        self.screen.lcd_display_string('Press start'.center(16, ' '), 2)
+        while not GPIO.event_detected(self.buttons['start']):
+            if GPIO.event_detected(self.buttons['stop']):
+                return False
+            time.sleep(0.2)
+        return True
+
     def start_work(self):
         print('Starting study')
         self.notify.toggle_led(self.notify.led_green, True)
@@ -89,6 +99,7 @@ class PomodoroTimer(CountDown):
         session_start = time.time()
         self.next_cycle = True
         while self.next_cycle:
+            self.next_cycle = self.await_confirmation('Confirm cycle'.center(16, ' '))
 
             if self.cycle % 4 != 0:
                 self.start_work()
