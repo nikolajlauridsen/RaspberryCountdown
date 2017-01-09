@@ -99,11 +99,14 @@ class PomodoroTimer(CountDown):
         session_start = time.time()
         self.next_cycle = True
         while self.next_cycle:
-            self.next_cycle = self.await_confirmation('Confirm cycle'.center(16, ' '))
+            self.next_cycle = self.await_confirmation('Confirm work')
+            if not self.next_cycle: break
 
             if self.cycle % 4 != 0:
                 self.start_work()
                 if self.next_cycle:
+                    self.next_cycle = self.await_confirmation('Confirm break')
+                    if not self.next_cycle: break
                     self.start_break(True)
                 else:
                     break
@@ -111,6 +114,8 @@ class PomodoroTimer(CountDown):
             else:
                 self.start_work()
                 if self.next_cycle:
+                    self.next_cycle = self.await_confirmation('Confirm break')
+                    if not self.next_cycle: break
                     self.start_break(False)
                 else:
                     break
