@@ -47,9 +47,9 @@ def get_calendar_id():
     """Secret ids and keys is bad juju in source code
     It might not be encrypted, but at least it's not public."""
     try:
-        stamp = open(os.path.join('web','calendar_id.txt')).readlines()
-        return stamp[0][:-1] # Returns the first line containing the key,
-                             # minus the next line sign
+        calendarId = open(os.path.join('web','calendar_id.txt')).readlines()
+        return calendarId[0][:-1] # Returns the first line containing the key,
+                                  # minus the next line sign
     except FileNotFoundError:
         return 'primary'
 
