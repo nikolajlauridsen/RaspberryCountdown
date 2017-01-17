@@ -43,6 +43,15 @@ def get_credentials():
         print('Storing credentials to ' + credential_path)
     return credentials
 
+def get_calendar_id():
+    """Secret ids and keys is bad juju in source code
+    It might not be encrypted, but at least it's not public."""
+    try:
+        stamp = open(os.path.join('web','calendar_id.txt')).readlines()
+        return stamp[0][:-1] # Returns the first line containing the key,
+                             # minus the next line sign
+    except FileNotFoundError:
+        return 'primary'
 
 class EventCreator:
     """Class for creating events on google calendar"""
@@ -72,4 +81,4 @@ class EventCreator:
                 'useDefault': False
             }
         }
-        self.service.events().insert(calendarId='primary', body=event).execute()
+        self.service.events().insert(calendarId=get_calendar_id(), body=event).execute()
