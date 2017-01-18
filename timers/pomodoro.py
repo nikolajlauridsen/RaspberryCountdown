@@ -145,6 +145,7 @@ class PomodoroTimer(CountDown):
 
         self.screen.lcd_display_string('Session saved'.center(16, ' '), 1)
         self.screen.lcd_display_string(' ' * 16, 2)
+        self.total_cycles = 0
         time.sleep(0.5)
         print('Session finished')
 
