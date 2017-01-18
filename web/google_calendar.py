@@ -43,6 +43,7 @@ def get_credentials():
         print('Storing credentials to ' + credential_path)
     return credentials
 
+
 def get_calendar_id():
     """Secret ids and keys is bad juju in source code
     It might not be encrypted, but at least it's not public."""
@@ -52,6 +53,7 @@ def get_calendar_id():
                                   # minus the next line sign
     except FileNotFoundError:
         return 'primary'
+
 
 class EventCreator:
     """Class for creating events on google calendar"""

@@ -6,7 +6,7 @@ date: 18/1/17
 Some has then been modiefied by: Nikolaj Lauridsen
 """
 import sqlite3
-from flask import Flask, jsonify, g, request
+from flask import Flask, jsonify, g, request, render_template
 import settings
 
 DATABASE = 'database.db'
@@ -70,23 +70,24 @@ def query_db(query, args=(), one=False, put=False):
 def get_last_week():
     query = "SELECT * FROM pomodoro" \
             " WHERE datetime(startTime, 'unixepoch') >= DATE('now', '-7 days')"
-    sessions = query_db(query)
-    return sessions
+    weekly_sessions = query_db(query)
+    return weekly_sessions
 
 
 def get_last_month():
-    query = "SELECT * FROM pomodoro" \
-            " WHERE datetime(startTime, 'unixepoch') >= DATE('now', '-1 month')"
-    sessions = query_db(query)
-    return sessions
+    query = "SELECT * FROM pomodoro " \
+            "WHERE datetime(startTime, 'unixepoch') >= DATE('now', '-1 month')"
+    monthly_sessions = query_db(query)
+    return monthly_sessions
 
 
 @TimeBuddy.route('/api/sessions/', methods=['GET', 'POST'])
 def sessions():
     """API endpoint for storing/receiving sessions"""
     if request.method == 'GET':
-        sessions = query_db('SELECT * from pomodoro')
-        return jsonify(sessions)
+        session_data = query_db('SELECT * from pomodoro')
+        return jsonify(session_data)
+
     elif request.method == 'POST':
         query_db('INSERT INTO pomodoro VALUES (?,?,?,?)',
                  [request.form['start'],
@@ -106,6 +107,11 @@ def sessions_week():
 def sessions_month():
     monthly_sessions = get_last_month()
     return jsonify(monthly_sessions)
+
+
+@TimeBuddy.route('/index', methods=['GET'])
+def index():
+    return render_template('index.html')
 
 if __name__ == '__main__':
     TimeBuddy.run(host=settings.host,
