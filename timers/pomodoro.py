@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 import time
 from .countdown import CountDown
 from web.google_calendar import EventCreator
+from web.api_handler import ApiHandler
 
 
 class PomodoroTimer(CountDown):
@@ -14,6 +15,7 @@ class PomodoroTimer(CountDown):
 
         # And flags
         self.cycle = 1
+        self.total_cycles = 0
         self.pomodoro_running = True
         self.next_cycle = True
         self.debug = debug
@@ -23,6 +25,7 @@ class PomodoroTimer(CountDown):
         self.buttons = buttons
         self.notify = notifier
         self.calendar = EventCreator()
+        self.api_handler = ApiHandler()
 
         # And integers
         if self.debug:
@@ -78,6 +81,7 @@ class PomodoroTimer(CountDown):
 
     def start_work(self):
         print('Starting study')
+        self.total_cycles += 1
         self.notify.toggle_led(self.notify.led_green, True)
         self.notify.toggle_led(self.notify.led_red, False)
         self.next_cycle = self.run_timer(self.study_t, 'Work')
@@ -122,7 +126,7 @@ class PomodoroTimer(CountDown):
         self.finish_session(session_start)
 
     def finish_session(self, session_start):
-        # Session over TODO: make calendar event
+        # Session over
         self.notify.clear_leds()
         self.screen.lcd_display_string('Session ended'.center(16, ' '), 1)
         self.screen.lcd_display_string(' ' * 16, 2)
@@ -135,8 +139,9 @@ class PomodoroTimer(CountDown):
             stamp = self.seconds_to_timestamp(session_end-session_start)
             description = 'Duration: ' + stamp
             self.calendar.create_event('Pomodoro study session', session_start,
-                                       session_end,
-                                       description)
+                                       session_end, description)
+            self.api_handler.save_session(session_start, session_end,
+                                          self.total_cycles)
 
         self.screen.lcd_display_string('Session saved'.center(16, ' '), 1)
         self.screen.lcd_display_string(' ' * 16, 2)
