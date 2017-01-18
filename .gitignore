@@ -1,4 +1,6 @@
 __pycache__/*
 web/__pycache__/*
 .idea/*
-client_secret.json
+web/client_secret.json
+/web/calendar_id.txt
+/rest_api/database.db
