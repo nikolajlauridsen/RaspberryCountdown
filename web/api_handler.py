@@ -1,9 +1,10 @@
 import requests
+import rest_api.settings as settings
 
 
-class ApiHandler():
+class ApiHandler:
     def __init__(self):
-        self.api_url = "http://127.0.0.1:3000"
+        self.api_url = "http://" + settings.host + ":" + settings.host
 
     def save_session(self, start, end, cycles):
         payload = {
