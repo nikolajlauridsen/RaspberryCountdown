@@ -67,6 +67,20 @@ def query_db(query, args=(), one=False, put=False):
         return (rv[0] if rv else None) if one else rv
 
 
+def get_last_week():
+    query = "SELECT * FROM pomodoro" \
+            " WHERE datetime(startTime, 'unixepoch') >= DATE('now', '-7 days')"
+    sessions = query_db(query)
+    return sessions
+
+
+def get_last_month():
+    query = "SELECT * FROM pomodoro" \
+            " WHERE datetime(startTime, 'unixepoch') >= DATE('now', '-1 month')"
+    sessions = query_db(query)
+    return sessions
+
+
 @TimeBuddy.route('/api/sessions/', methods=['GET', 'POST'])
 def sessions():
     """API endpoint for storing/receiving sessions"""
@@ -80,6 +94,18 @@ def sessions():
                   request.form['duration'],
                   request.form['cycles']], put=True)
         return """Session saved"""
+
+
+@TimeBuddy.route('/api/sessions/week/', methods=['GET'])
+def sessions_week():
+    weekly_sessions = get_last_week()
+    return jsonify(weekly_sessions)
+
+
+@TimeBuddy.route('/api/sessions/month/', methods=['GET'])
+def sessions_month():
+    monthly_sessions = get_last_month()
+    return jsonify(monthly_sessions)
 
 if __name__ == '__main__':
     TimeBuddy.run(host=settings.host,
