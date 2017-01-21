@@ -139,15 +139,17 @@ class PomodoroTimer(CountDown):
         self.screen.lcd_display_string('calendar event'.center(16, ' '), 2)
         session_end = time.time()
         if not self.debug:
-            stamp = self.seconds_to_timestamp(session_end-session_start)
-            description = 'Duration: ' + stamp
-            self.calendar.create_event('Pomodoro study session', session_start,
-                                       session_end, description)
-            self.api_handler.save_session(session_start, session_end,
-                                          self.total_cycles)
+            duration = session_end-session_start
+            if duration > 10:
+                stamp = self.seconds_to_timestamp(duration)
+                description = 'Duration: ' + stamp
+                self.calendar.create_event('Pomodoro study session', session_start,
+                                           session_end, description)
+                self.api_handler.save_session(session_start, session_end,
+                                              self.total_cycles)
 
-        self.screen.lcd_display_string('Session saved'.center(16, ' '), 1)
-        self.screen.lcd_display_string(' ' * 16, 2)
+            self.screen.lcd_display_string('Session saved'.center(16, ' '), 1)
+            self.screen.lcd_display_string(' ' * 16, 2)
         self.total_cycles = 0
         time.sleep(0.5)
         print('Session finished')
