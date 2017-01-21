@@ -154,16 +154,11 @@ class PomodoroTimer(CountDown):
 
     def main(self):
         """Main loop, displays title and awaits input, then runs a session"""
-        while self.pomodoro_running:
+        while GPIO.input(self.buttons["stop"]) == GPIO.HIGH:
             self.screen.lcd_display_string('Pomodoro Timer'.center(16, ' '), 1)
             self.screen.lcd_display_string('Press start'.center(16, ' '), 2)
 
             if GPIO.event_detected(self.buttons['start']):
                 print('session')
                 self.run_session()
-
-            elif GPIO.event_detected(self.buttons['stop']):
-                print('Pomodoro stopped')
-                break
-
         time.sleep(0.2)
