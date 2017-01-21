@@ -4,6 +4,8 @@ Displays an index page for session statistics as well
 database functions is taken from: http://flask.pocoo.org/docs/0.12/patterns/sqlite3/#
 date: 18/1/17
 Some has then been modiefied by: Nikolaj Lauridsen
+NOTE: This is NOT a module for TimeBuddy, it's an entity on it's own
+that facilitate features in TimeBuddy
 """
 import sqlite3
 from flask import Flask, jsonify, g, request, render_template

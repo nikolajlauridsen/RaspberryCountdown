@@ -5,3 +5,7 @@
 .padding{
     padding-top: 10px;
 }
+
+.jumbotron{
+    background-image: url(banner.jpg);
+}
