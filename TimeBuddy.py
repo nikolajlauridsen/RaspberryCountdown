@@ -65,6 +65,8 @@ while GPIO.input(buttons["stop"]) == GPIO.HIGH:
     elif GPIO.event_detected(buttons['stop']):
         break
 
+    time.sleep(0.2)
+
 
 pomodoro.main()
 
