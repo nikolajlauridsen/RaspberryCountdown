@@ -18,16 +18,14 @@ class StopWatch:
 
     def start(self):
         print("clock started")
+        self.screen.lcd_display_string("Running".center(16), 1)
         self.start_time = time.time()
         self.running = True
 
     def toggle_pause(self):
         if self.running:
             print("clock paused")
-            if self.running:
-                self.screen.lcd_display_string("Paused", 1)
-            else:
-                self.screen.lcd_display_string("Running", 1)
+            self.screen.lcd_display_string("Paused".center(16), 1)
             self.pause_data.append(self.get_elapsed())
             self.running = False
         else:
@@ -60,7 +58,7 @@ class StopWatch:
             return "{}".format(round(elapsed, precision))
 
     def main(self):
-        self.screen.lcd_display_string("Timer stopped", 1)
+        self.screen.lcd_display_string("Timer stopped".center(16), 1)
         self.screen.lcd_display_string(" "*16, 2)
 
         GPIO.wait_for_edge(self.buttons["start"], GPIO.RISING)
