@@ -12,3 +12,20 @@
     padding: 0;
     margin: 0;
 }
+
+.jumbotron h1{
+    color: #36454f;
+    text-align: center;
+    position: relative;
+    top:40%;
+    text-shadow: 20px 20px #eEf4f1;
+}
+
+
+.jumbotron h2, .jumbotron h3{
+    color: #36454f;
+    text-align: center;
+    position: relative;
+    top:40%;
+    text-shadow: 1px 1px #eEf4f1;
+}
