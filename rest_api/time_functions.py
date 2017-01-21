@@ -1,12 +1,12 @@
 """Various time related functions used in calculating statistics"""
 
 
-def get_avg_duration(session_data):
-    sum = 0
-    for session in session_data:
-        sum += session["duration"]
+def get_duration_sum(session_data):
+    summation = 0
 
-    return sum/len(session_data)
+    for session in session_data:
+        summation += session["duration"]
+    return summation
 
 
 def seconds_to_timestamp(seconds):

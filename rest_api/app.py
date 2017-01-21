@@ -119,14 +119,20 @@ def index():
     """Index page to show statistics"""
     # Pack monthly data
     monthly_data = get_last_month()
+    m_duration_sum = get_duration_sum(monthly_data)
     monthly = {'count': len(monthly_data),
-               'average': seconds_to_timestamp(get_avg_duration(monthly_data))
+               'average': seconds_to_timestamp(m_duration_sum/len(monthly_data)),
+               'daily': seconds_to_timestamp(m_duration_sum/30),
+               'total': seconds_to_timestamp(m_duration_sum)
                }
 
     # Pack weekly data
     weekly_data = get_last_week()
+    w_duration_sum = get_duration_sum(weekly_data)
     weekly = {'count': len(weekly_data),
-              'average': seconds_to_timestamp(get_avg_duration(weekly_data))
+              'average': seconds_to_timestamp(w_duration_sum/len(weekly_data)),
+              'daily': seconds_to_timestamp(w_duration_sum/7),
+              'total': seconds_to_timestamp(w_duration_sum)
               }
 
     context = {
