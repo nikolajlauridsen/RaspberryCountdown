@@ -4,7 +4,7 @@ import rest_api.settings as settings
 
 class ApiHandler:
     def __init__(self):
-        self.api_url = "http://" + settings.host + ":" + settings.host
+        self.api_url = "http://" + settings.host + ":" + settings.port
 
     def save_session(self, start, end, cycles):
         payload = {
