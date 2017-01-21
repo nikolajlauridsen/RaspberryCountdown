@@ -7,6 +7,7 @@ Some has then been modiefied by: Nikolaj Lauridsen
 """
 import sqlite3
 from flask import Flask, jsonify, g, request, render_template
+from time_functions import *
 import settings
 
 DATABASE = 'database.db'
@@ -68,6 +69,7 @@ def query_db(query, args=(), one=False, put=False):
 
 
 def get_last_week():
+    """Returns session data from the past 7 days"""
     query = "SELECT * FROM pomodoro" \
             " WHERE datetime(startTime, 'unixepoch') >= DATE('now', '-7 days')"
     weekly_sessions = query_db(query)
@@ -75,6 +77,7 @@ def get_last_week():
 
 
 def get_last_month():
+    """Returns session data from the past 30 days"""
     query = "SELECT * FROM pomodoro " \
             "WHERE datetime(startTime, 'unixepoch') >= DATE('now', '-1 month')"
     monthly_sessions = query_db(query)
@@ -99,19 +102,38 @@ def sessions():
 
 @TimeBuddy.route('/api/sessions/week/', methods=['GET'])
 def sessions_week():
+    """Weekly endpoint for receiving sessions data from the past 7 days"""
     weekly_sessions = get_last_week()
     return jsonify(weekly_sessions)
 
 
 @TimeBuddy.route('/api/sessions/month/', methods=['GET'])
 def sessions_month():
+    """Monthly endpoint for receiving sessions data from the past 30 days"""
     monthly_sessions = get_last_month()
     return jsonify(monthly_sessions)
 
 
 @TimeBuddy.route('/index', methods=['GET'])
 def index():
-    return render_template('index.html')
+    """Index page to show statistics"""
+    # Pack monthly data
+    monthly_data = get_last_month()
+    monthly = {'count': len(monthly_data),
+               'average': seconds_to_timestamp(get_avg_duration(monthly_data))
+               }
+
+    # Pack weekly data
+    weekly_data = get_last_week()
+    weekly = {'count': len(weekly_data),
+              'average': seconds_to_timestamp(get_avg_duration(weekly_data))
+              }
+
+    context = {
+        'weekly': weekly,
+        'monthly': monthly
+    }
+    return render_template('index.html', data=context)
 
 if __name__ == '__main__':
     TimeBuddy.run(host=settings.host,
