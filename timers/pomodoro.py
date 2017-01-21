@@ -36,6 +36,9 @@ class PomodoroTimer(CountDown):
         self.short_break = short_break * minute_multiplier
         self.long_break = long_break * minute_multiplier
 
+    def __repr__(self):
+        return "Pomodoro"
+
     def run_timer(self, duration, action):
         """
         Run a timer
