@@ -24,6 +24,7 @@ class StopWatch:
 
     def reset(self):
         self.screen.lcd_display_string("Stopped".center(16), 1)
+        self.screen.lcd_display_string(" "*16, 2)
         self.elapsed = 0
         self.pause_data = []
         self.running = False
