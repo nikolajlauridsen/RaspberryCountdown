@@ -22,6 +22,12 @@ class StopWatch:
         self.start_time = time.time()
         self.running = True
 
+    def reset(self):
+        self.screen.lcd_display_string("Stopped".center(16), 1)
+        self.elapsed = 0
+        self.pause_data = []
+        self.running = False
+
     def toggle_pause(self):
         if self.running:
             print("clock paused")
@@ -69,6 +75,9 @@ class StopWatch:
             self.screen.lcd_display_string(self.get_elapsed_string(), 2)
             if GPIO.event_detected(self.buttons["start"]):
                 self.toggle_pause()
+
+            if GPIO.event_detected(self.buttons['back']):
+                self.reset()
             time.sleep(0.2)
 
 
