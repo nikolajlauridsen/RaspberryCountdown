@@ -4,13 +4,13 @@ import rest_api.settings as settings
 
 class ApiHandler:
     def __init__(self):
-        self.api_url = "http://" + settings.host + ":" + settings.port
+        self.api_url = "http://" + settings.host + ":" + str(settings.port)
 
     def save_session(self, start, end, cycles):
         payload = {
             "start": int(start),
             "end": int(end),
-            "duration": int(start-end),
+            "duration": int(end-start),
             "cycles": cycles
         }
         res = requests.post(self.api_url + '/api/sessions/', data=payload)
