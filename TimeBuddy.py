@@ -41,10 +41,9 @@ stopwatch = StopWatch(screen, notifier, buttons)
 
 options = [pomodoro, stopwatch]
 
-screen.lcd_display_string("Select program".center(16), 1)
-
 cursor = 0
 while GPIO.input(buttons["stop"]) == GPIO.HIGH:
+    screen.lcd_display_string("Select program".center(16), 1)
     screen.lcd_display_string(str(options[cursor]).center(16), 2)
 
     if GPIO.event_detected(buttons['forward']):
