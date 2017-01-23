@@ -1,0 +1,21 @@
+<!doctype html>
+
+<html>
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='main.css') }}" rel="stylesheet">
+    <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
+</head>
+
+<body>
+<div class="jumbotron">
+    <H1>{{data.title}}</H1>
+    <H3>{{data.tagline}}</H3>
+</div>
+<div id="content">{% block content %}{% endblock %}</div>
+</body>
+</html>

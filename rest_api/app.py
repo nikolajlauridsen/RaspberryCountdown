@@ -8,6 +8,7 @@ NOTE: This is NOT a module for TimeBuddy, it's an entity on it's own
 that facilitate features in TimeBuddy
 """
 import sqlite3
+import time
 from flask import Flask, jsonify, g, request, render_template
 from time_functions import *
 import settings
@@ -102,6 +103,19 @@ def sessions():
         return """Session saved"""
 
 
+@TimeBuddy.route('/api/tasks/', methods=['GET', 'POST'])
+def tasks_api():
+
+    if request.method == 'GET':
+        tasks_data = query_db('SELECT * FROM tasks')
+        return jsonify(tasks_data)
+
+    elif request.method == 'POST':
+        query_db('INSERT INTO tasks VALUES (?, ?)',
+                 [int(time.time()), request.form['name']], put=True)
+        return """Task saved"""
+
+
 @TimeBuddy.route('/api/sessions/week/', methods=['GET'])
 def sessions_week():
     """Weekly endpoint for receiving sessions data from the past 7 days"""
@@ -116,32 +130,57 @@ def sessions_month():
     return jsonify(monthly_sessions)
 
 
-@TimeBuddy.route('/index', methods=['GET'])
+@TimeBuddy.route('/index/', methods=['GET'])
 def index():
     """Index page to show statistics"""
     # Pack monthly data
     monthly_data = get_last_month()
     m_duration_sum = get_duration_sum(monthly_data)
+    try:
+        m_sum = m_duration_sum/30
+        daily_month = m_duration_sum/len(monthly_data)
+    except ZeroDivisionError:
+        m_sum = 0
+        daily_month = 0
+
     monthly = {'count': len(monthly_data),
-               'average': seconds_to_timestamp(m_duration_sum/len(monthly_data)),
-               'daily': seconds_to_timestamp(m_duration_sum/30),
+               'average': seconds_to_timestamp(daily_month),
+               'daily': seconds_to_timestamp(m_sum),
                'total': seconds_to_timestamp(m_duration_sum)
                }
 
     # Pack weekly data
     weekly_data = get_last_week()
     w_duration_sum = get_duration_sum(weekly_data)
+    try:
+        w_avg = w_duration_sum / 7
+        daily_week = w_duration_sum/len(weekly_data)
+    except ZeroDivisionError:
+        w_avg = 0
+        daily_week = 0
+
     weekly = {'count': len(weekly_data),
-              'average': seconds_to_timestamp(w_duration_sum/len(weekly_data)),
-              'daily': seconds_to_timestamp(w_duration_sum/7),
+              'average': seconds_to_timestamp(daily_week),
+              'daily': seconds_to_timestamp(w_avg),
               'total': seconds_to_timestamp(w_duration_sum)
               }
 
     context = {
         'weekly': weekly,
-        'monthly': monthly
+        'monthly': monthly,
+        'title': 'TimeBuddy',
+        'tagline': 'Statistics'
     }
     return render_template('index.html', data=context)
+
+
+@TimeBuddy.route('/tasks/', methods=['GET'])
+def tasks():
+    task_data = query_db('SELECT * FROM tasks')
+    context = {'tasks': task_data,
+               'title': 'Tasks',
+               'tagline': 'Control panel'}
+    return render_template('tasks.html', data=context)
 
 if __name__ == '__main__':
     TimeBuddy.run(host=settings.host,

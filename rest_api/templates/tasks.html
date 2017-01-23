@@ -1,0 +1,28 @@
+<html>
+{% extends "base.html" %}
+{% block titel %}Tasks control pane{% endblock %}
+
+{% block content %}
+<div class="col-md-2"></div>
+<div class="col-md-8">
+    <h1>Tasks</h1>
+    <table>
+        <tr>
+            <th>Task name</th>
+            <br>
+        </tr>
+        {% for task in data.tasks %}
+        <tr>
+            <th>{{task.name}}</th>
+        </tr>
+        {% endfor %}
+    </table>
+    <h1>New task</h1>
+    <form action="/api/tasks/" method="post">
+        <input type="text" name="name" value="Task name">
+        <input type="submit" value="submit">
+    </form>
+</div>
+<div class="col-md-2"></div>
+{% endblock %}
+</html>
