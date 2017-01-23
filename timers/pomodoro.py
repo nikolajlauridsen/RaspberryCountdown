@@ -143,7 +143,7 @@ class PomodoroTimer(CountDown):
             duration = session_end-session_start
             if duration > 10:
                 stamp = self.seconds_to_timestamp(duration)
-                description = 'Duration: ' + stamp
+                description = 'Duration: ' + stamp + '\n' + 'Task: ' + task
                 self.calendar.create_event('Pomodoro study session', session_start,
                                            session_end, description)
                 self.api_handler.save_session(session_start, session_end,
