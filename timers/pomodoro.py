@@ -70,7 +70,7 @@ class PomodoroTimer(CountDown):
 
         # cycle finished, blink and start new
         self.notify.blink()
-        self.notify.beep(count=2, beep=0.3)
+        self.notify.beep(count=2, beep=0.2, pause=0.1)
         return True
 
     def await_confirmation(self, message):
