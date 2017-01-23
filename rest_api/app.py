@@ -95,11 +95,12 @@ def sessions():
         return jsonify(session_data)
 
     elif request.method == 'POST':
-        query_db('INSERT INTO pomodoro VALUES (?,?,?,?)',
+        query_db('INSERT INTO pomodoro VALUES (?,?,?,?,?)',
                  [request.form['start'],
                   request.form['end'],
                   request.form['duration'],
-                  request.form['cycles']], put=True)
+                  request.form['cycles'],
+                  request.form['task']], put=True)
         return """Session saved"""
 
 
