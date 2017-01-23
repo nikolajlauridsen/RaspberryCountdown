@@ -12,10 +12,29 @@
 </head>
 
 <body>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">Menu
+            </button>
+            <a class="navbar-brand" href="/index/">Home</a>
+        </div>
+
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/tasks/">Tasks</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
 <div class="jumbotron">
     <H1>{{data.title}}</H1>
     <H3>{{data.tagline}}</H3>
 </div>
+
 <div id="content">{% block content %}{% endblock %}</div>
 </body>
 </html>

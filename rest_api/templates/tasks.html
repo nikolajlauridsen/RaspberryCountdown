@@ -6,14 +6,15 @@
 <div class="col-md-2"></div>
 <div class="col-md-8">
     <h1>Tasks</h1>
-    <table>
+    <table  id="task-panel">
         <tr>
             <th>Task name</th>
-            <br>
+            <th>Date added</th>
         </tr>
         {% for task in data.tasks %}
         <tr>
             <th>{{task.name}}</th>
+            <th>{{task.date}}</th>
         </tr>
         {% endfor %}
     </table>
