@@ -202,7 +202,7 @@ def index():
     context = {
         'weekly': weekly,
         'monthly': monthly,
-        'tasks': task_data
+        'tasks': task_data,
         'title': 'TimeBuddy',
         'tagline': 'Statistics'
     }
