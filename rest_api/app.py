@@ -87,6 +87,35 @@ def get_last_month():
     return monthly_sessions
 
 
+def get_task_breakdown(session_data):
+    """
+    Creates a list of task dictionaries
+    Dictionaries are structured as so:
+    task = {
+            "name": "name string",
+            "duration": "duration int",
+            "sessions": "sessions" int,
+            "cycles": "cycles int"
+    }
+    """
+    task_data = query_db("SELECT name FROM tasks")
+    breakdown = []
+    for task in task_data:
+        task = {"name": task["name"],
+                "duration": 0,
+                "sessions": 0,
+                "cycles": 0}
+        breakdown.append(task)
+
+    for session in session_data:
+        for task in breakdown:
+            if session["task"] == task["name"]:
+                task["duration"] += session["duration"]
+                task["sessions"] += 1
+                task["cycles"] += session["cycles"]
+
+    return breakdown
+
 @TimeBuddy.route('/api/sessions/', methods=['GET', 'POST'])
 def sessions():
     """API endpoint for storing/receiving sessions"""
@@ -166,9 +195,14 @@ def index():
               'total': seconds_to_timestamp(w_duration_sum)
               }
 
+    # Pack task data
+    task_data = get_task_breakdown(weekly_data)
+
+
     context = {
         'weekly': weekly,
         'monthly': monthly,
+        'tasks': task_data
         'title': 'TimeBuddy',
         'tagline': 'Statistics'
     }
