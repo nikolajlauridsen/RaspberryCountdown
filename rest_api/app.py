@@ -92,7 +92,7 @@ def sessions():
     """API endpoint for storing/receiving sessions"""
     if request.method == 'GET':
         session_data = query_db('SELECT * from pomodoro')
-        return jsonify(session_data)
+        return jsonify(results=session_data)
 
     elif request.method == 'POST':
         query_db('INSERT INTO pomodoro VALUES (?,?,?,?,?)',
@@ -109,7 +109,7 @@ def tasks_api():
 
     if request.method == 'GET':
         tasks_data = query_db('SELECT * FROM tasks')
-        return jsonify(tasks_data)
+        return jsonify(results=tasks_data)
 
     elif request.method == 'POST':
         query_db('INSERT INTO tasks VALUES (?, ?)',
@@ -121,14 +121,14 @@ def tasks_api():
 def sessions_week():
     """Weekly endpoint for receiving sessions data from the past 7 days"""
     weekly_sessions = get_last_week()
-    return jsonify(weekly_sessions)
+    return jsonify(results=weekly_sessions)
 
 
 @TimeBuddy.route('/api/sessions/month/', methods=['GET'])
 def sessions_month():
     """Monthly endpoint for receiving sessions data from the past 30 days"""
     monthly_sessions = get_last_month()
-    return jsonify(monthly_sessions)
+    return jsonify(results=monthly_sessions)
 
 
 @TimeBuddy.route('/index/', methods=['GET'])

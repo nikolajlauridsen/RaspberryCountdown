@@ -10,7 +10,8 @@ class ApiHandler:
 
     def get_tasks(self):
         res = requests.get(self.api_url+self.tasks_endpoint)
-        return json.loads(res.text)
+        results = json.loads(res.text)
+        return results["results"]
 
     def save_session(self, start, end, cycles, task):
         payload = {
