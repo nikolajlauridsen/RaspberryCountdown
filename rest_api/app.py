@@ -9,7 +9,7 @@ that facilitate features in TimeBuddy
 """
 import sqlite3
 import time
-from flask import Flask, jsonify, g, request, render_template
+from flask import Flask, jsonify, g, request, render_template, url_for, redirect
 from time_functions import *
 import settings
 
@@ -116,6 +116,7 @@ def get_task_breakdown(session_data):
 
     return breakdown
 
+
 @TimeBuddy.route('/api/sessions/', methods=['GET', 'POST'])
 def sessions():
     """API endpoint for storing/receiving sessions"""
@@ -143,7 +144,13 @@ def tasks_api():
     elif request.method == 'POST':
         query_db('INSERT INTO tasks VALUES (?, ?)',
                  [int(time.time()), request.form['name']], put=True)
-        return """Task saved"""
+        return redirect(url_for(endpoint='tasks'))
+
+
+@TimeBuddy.route('/api/tasks/delete', methods=['POST'])
+def delete_task():
+    query_db("DELETE FROM tasks WHERE name = ?", [request.form['name']], put=True)
+    return redirect(url_for(endpoint='tasks'))
 
 
 @TimeBuddy.route('/api/sessions/week/', methods=['GET'])
@@ -197,7 +204,6 @@ def index():
 
     # Pack task data
     task_data = get_task_breakdown(weekly_data)
-
 
     context = {
         'weekly': weekly,

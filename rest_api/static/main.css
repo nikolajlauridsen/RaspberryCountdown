@@ -36,3 +36,8 @@
     background-color: cornflowerblue;
     border: 2px solid black;
 }
+
+#del-button th{
+    background-color: white;
+    border: none;
+}

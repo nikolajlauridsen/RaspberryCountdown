@@ -15,12 +15,18 @@
         <tr>
             <th>{{task.name}}</th>
             <th>{{task.date}}</th>
+            <th id="del-button">
+                <form action="/api/tasks/delete" method="post" >
+                    <input type="hidden" name="name" value="{{task.name}}">
+                    <input type="Submit" value="Delete">
+                </form>
+            </th>
         </tr>
         {% endfor %}
     </table>
     <h1>New task</h1>
     <form action="/api/tasks/" method="post">
-        <input type="text" name="name" value="Task name">
+        <input type="text" name="name" value="name">
         <input type="submit" value="submit">
     </form>
 </div>
