@@ -9,6 +9,8 @@ that facilitate features in TimeBuddy
 """
 import sqlite3
 import time
+import tzlocal
+from datetime import datetime
 from flask import Flask, jsonify, g, request, render_template, url_for, redirect
 from time_functions import *
 import settings
@@ -204,6 +206,8 @@ def index():
 
     # Pack task data
     task_data = get_task_breakdown(weekly_data)
+    for task in task_data:
+        task["duration"] = seconds_to_timestamp(int(task["duration"]))
 
     context = {
         'weekly': weekly,
@@ -218,6 +222,8 @@ def index():
 @TimeBuddy.route('/tasks/', methods=['GET'])
 def tasks():
     task_data = query_db('SELECT * FROM tasks')
+    for task in task_data:
+        task["date"] = datetime.utcfromtimestamp(int(task["date"])).strftime('%d-%m-%Y')
     context = {'tasks': task_data,
                'title': 'Tasks',
                'tagline': 'Control panel'}

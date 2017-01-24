@@ -31,13 +31,24 @@
 }
 
 #task-panel th{
-    width: 100px;
+    width: auto;
     height: 50px;
     background-color: cornflowerblue;
     border: 2px solid black;
+    text-align: center;
+    padding: 10px;
 }
 
-#del-button th{
-    background-color: white;
+#task-panel th:nth-child(3n){
     border: none;
+    background-color: white;
+}
+
+#breakdown th{
+    width: auto;
+    height: 50px;
+    background-color: cornflowerblue;
+    border: 2px solid black;
+    text-align: center;
+    padding: 10px;
 }
