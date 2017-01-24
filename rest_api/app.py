@@ -9,7 +9,6 @@ that facilitate features in TimeBuddy
 """
 import sqlite3
 import time
-import tzlocal
 from datetime import datetime
 from flask import Flask, jsonify, g, request, render_template, url_for, redirect
 from time_functions import *
@@ -115,13 +114,6 @@ def get_task_breakdown(session_data):
                 task["duration"] += session["duration"]
                 task["sessions"] += 1
                 task["cycles"] += session["cycles"]
-            else:
-                task = {"name": task["name"],
-                        "duration": 0,
-                        "sessions": 0,
-                        "cycles": 0}
-                breakdown.append(task)
-
     return breakdown
 
 
