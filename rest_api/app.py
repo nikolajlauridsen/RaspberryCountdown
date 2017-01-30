@@ -101,6 +101,8 @@ def get_task_breakdown(session_data):
     """
     task_data = query_db("SELECT name FROM tasks")
     breakdown = []
+
+    # Build the task dictionaries
     for task in task_data:
         task = {"name": task["name"],
                 "duration": 0,
@@ -108,6 +110,7 @@ def get_task_breakdown(session_data):
                 "cycles": 0}
         breakdown.append(task)
 
+    # Add the info
     for session in session_data:
         for task in breakdown:
             if session["task"] == task["name"]:
@@ -138,18 +141,23 @@ def sessions():
 def tasks_api():
 
     if request.method == 'GET':
-        tasks_data = query_db('SELECT * FROM tasks')
+        if request.form['active']:
+            tasks_data = query_db('SELECT * FORM tasks WHERE active > 0')
+        else:
+            tasks_data = query_db('SELECT * FROM tasks')
         return jsonify(results=tasks_data)
 
     elif request.method == 'POST':
-        query_db('INSERT INTO tasks VALUES (?, ?)',
+        # All tasks starts off as active
+        query_db('INSERT INTO tasks VALUES (?, ?, 1)',
                  [int(time.time()), request.form['name']], put=True)
         return redirect(url_for(endpoint='tasks'))
 
 
 @TimeBuddy.route('/api/tasks/delete', methods=['POST'])
 def delete_task():
-    query_db("DELETE FROM tasks WHERE name = ?", [request.form['name']], put=True)
+    query_db("UPDATE tasks SET active=0 WHERE name=(?)",
+             [request.form['name']], put=True)
     return redirect(url_for(endpoint='tasks'))
 
 
@@ -219,7 +227,7 @@ def index():
 
 @TimeBuddy.route('/tasks/', methods=['GET'])
 def tasks():
-    task_data = query_db('SELECT * FROM tasks')
+    task_data = query_db('SELECT * FROM tasks WHERE active > 0')
     for task in task_data:
         task["date"] = datetime.utcfromtimestamp(int(task["date"])).strftime('%d-%m-%Y')
     context = {'tasks': task_data,
