@@ -6,9 +6,13 @@ import rest_api.settings as settings
 class ApiHandler:
     def __init__(self):
         self.api_url = "http://" + settings.host + ":" + str(settings.port)
-        self.tasks_endpoint = "/api/tasks/"
+        # Endpoint shorthands, makes everything a bit prettier
+        self.tasks = "/api/tasks/"
+        self.session = "/api/sessions"
 
     def get_tasks(self, status):
+        """Get all tasks from the api database
+        takes a status string of either 'active', 'inactive', or 'both'"""
         if status.lower() == "active":
             payload = {"active": 1}
         elif status.lower() == "inactive":
@@ -16,11 +20,12 @@ class ApiHandler:
         else:
             payload = {"active": 2}
 
-        res = requests.get(self.api_url+self.tasks_endpoint, data=payload)
+        res = requests.get(self.api_url + self.tasks, data=payload)
         results = json.loads(res.text)
         return results["results"]
 
     def save_session(self, start, end, cycles, task):
+        """Insert a pomodoro session into the database"""
         payload = {
             "start": int(start),
             "end": int(end),
@@ -28,5 +33,5 @@ class ApiHandler:
             "cycles": cycles,
             "task": task
         }
-        res = requests.post(self.api_url + '/api/sessions/', data=payload)
+        res = requests.post(self.api_url + self.session, data=payload)
 
