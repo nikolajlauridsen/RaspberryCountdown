@@ -27,4 +27,4 @@ def get_calendar_id():
         return calendarId[0].strip('\n')   # Returns the first line containing
                                            # the key, minus the next line sign
     except FileNotFoundError:
-        return None
+        return ""
