@@ -157,7 +157,7 @@ class PomodoroTimer(CountDown):
 
     def main(self):
         """Main loop, displays title and awaits input, then runs a session"""
-        tasks = self.api_handler.get_tasks()
+        tasks = self.api_handler.get_tasks("active")
         cursor = 0
         while GPIO.input(self.buttons["stop"]) == GPIO.HIGH:
             self.screen.lcd_display_string('Choose task'.center(16, ' '), 1)

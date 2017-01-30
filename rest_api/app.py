@@ -141,8 +141,10 @@ def sessions():
 def tasks_api():
 
     if request.method == 'GET':
-        if request.form['active']:
-            tasks_data = query_db('SELECT * FORM tasks WHERE active > 0')
+        if request.form['active'] == "1":
+            tasks_data = query_db('SELECT * FROM tasks WHERE active > 0')
+        elif request.form['active'] == "0":
+            tasks_data = query_db('SELECT * FROM tasks WHERE active < 1')
         else:
             tasks_data = query_db('SELECT * FROM tasks')
         return jsonify(results=tasks_data)
