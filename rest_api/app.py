@@ -154,10 +154,10 @@ def tasks_api():
         return redirect(url_for(endpoint='tasks'))
 
 
-@TimeBuddy.route('/api/tasks/delete', methods=['POST'])
-def deactivate_task():
-    query_db("UPDATE tasks SET active=0 WHERE name=(?)",
-             [request.form['name']], put=True)
+@TimeBuddy.route('/api/tasks/toggle', methods=['POST'])
+def toggle_task():
+    query_db("UPDATE tasks SET active=(?) WHERE name=(?)",
+             [request.form['status'], request.form['name']], put=True)
     return redirect(url_for(endpoint='tasks'))
 
 
@@ -231,12 +231,22 @@ def index():
 
 @TimeBuddy.route('/tasks/', methods=['GET'])
 def tasks():
-    task_data = query_db('SELECT * FROM tasks WHERE active > 0')
-    for task in task_data:
-        task["date"] = datetime.utcfromtimestamp(int(task["date"])).strftime('%d-%m-%Y')
-    context = {'tasks': task_data,
+    active_tasks = query_db('SELECT * FROM tasks WHERE active > 0')
+    inactive_tasks = query_db('SELECT * FROM tasks WHERE active < 1')
+
+    for task in active_tasks:
+        task["date"] = datetime.utcfromtimestamp(int(task["date"])).strftime(
+            '%d-%m-%Y')
+
+    for task in inactive_tasks:
+        task["date"] = datetime.utcfromtimestamp(int(task["date"])).strftime(
+            '%d-%m-%Y')
+
+    context = {'active_tasks': active_tasks,
+               'inactive_tasks': inactive_tasks,
                'title': 'Tasks',
                'tagline': 'Control panel'}
+
     return render_template('tasks.html', data=context)
 
 if __name__ == '__main__':

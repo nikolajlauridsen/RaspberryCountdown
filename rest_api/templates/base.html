@@ -8,6 +8,7 @@
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='main.css') }}" rel="stylesheet">
     <title>{% block title %}{% endblock %}</title>
+    {% block code %}{% endblock %}
     {% endblock %}
 </head>
 

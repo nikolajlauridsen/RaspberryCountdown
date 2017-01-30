@@ -2,28 +2,65 @@
 {% extends "base.html" %}
 {% block title %}Tasks control pane{% endblock %}
 
+{% block code %}
+<script type="text/javascript" src="{{ url_for('static', filename='toggle.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 <div class="col-md-2"></div>
 <div class="col-md-8">
     <h1>Tasks</h1>
-    <table  id="task-panel">
-        <tr>
-            <th>Task name</th>
-            <th>Date added</th>
-        </tr>
-        {% for task in data.tasks %}
-        <tr>
-            <th>{{task.name}}</th>
-            <th>{{task.date}}</th>
-            <th id="del-button">
-                <form action="/api/tasks/delete" method="post" >
-                    <input type="hidden" name="name" value="{{task.name}}">
-                    <input type="Submit" value="Delete">
-                </form>
-            </th>
-        </tr>
-        {% endfor %}
-    </table>
+
+    <a onclick="toggle_visibility('active-table', 'inactive-table')">Toggle active/inactive tasks</a>
+
+    <div id="active-table">
+        <h2>Active tasks</h2>
+        <table class="task-panel">
+            <tr>
+                <th>Task name</th>
+                <th>Date added</th>
+            </tr>
+            {% for task in data.active_tasks %}
+            <tr>
+                <th>{{task.name}}</th>
+                <th>{{task.date}}</th>
+                <th id="del-button">
+                    <form action="/api/tasks/toggle" method="post" >
+                        <input type="hidden" name="name" value="{{task.name}}">
+                        <input type="hidden" name="status" value="0">
+                        <input type="Submit" value="Deactivate">
+                    </form>
+                </th>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div id="inactive-table">
+        <h2>Inactive tasks</h2>
+        <table class="task-panel">
+            <tr>
+                <th>Task name</th>
+                <th>Date added</th>
+            </tr>
+            {% for task in data.inactive_tasks %}
+            <tr>
+                <th>{{task.name}}</th>
+                <th>{{task.date}}</th>
+                <th class="activate-button">
+                    <form action="/api/tasks/toggle" method="post" >
+                        <input type="hidden" name="name" value="{{task.name}}">
+                        <input type="hidden" name="status" value="1">
+                        <input type="Submit" value="Activate">
+                    </form>
+                </th>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <br>
+
     <h1>New task</h1>
     <form action="/api/tasks/" method="post">
         <input type="text" name="name" value="name">
