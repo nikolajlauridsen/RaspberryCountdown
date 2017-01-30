@@ -1,5 +1,5 @@
 """Various time related functions used in calculating statistics"""
-import os
+
 
 def get_duration_sum(session_data):
     summation = 0
@@ -23,7 +23,7 @@ def get_calendar_id():
     """Secret ids and keys is bad juju in source code
     It might not be encrypted, but at least it's not public."""
     try:
-        calendarId = open(os.path.join('calendar_id.txt')).readlines()
+        calendarId = open('calendar_id.txt').readlines()
         return calendarId[0].strip('\n')   # Returns the first line containing
                                            # the key, minus the next line sign
     except FileNotFoundError:
