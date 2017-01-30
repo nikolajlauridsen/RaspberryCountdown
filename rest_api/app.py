@@ -11,7 +11,7 @@ import sqlite3
 import time
 from datetime import datetime
 from flask import Flask, jsonify, g, request, render_template, url_for, redirect
-from time_functions import *
+from utils import *
 import settings
 
 DATABASE = 'database.db'
@@ -155,7 +155,7 @@ def tasks_api():
 
 
 @TimeBuddy.route('/api/tasks/delete', methods=['POST'])
-def delete_task():
+def deactivate_task():
     query_db("UPDATE tasks SET active=0 WHERE name=(?)",
              [request.form['name']], put=True)
     return redirect(url_for(endpoint='tasks'))
@@ -215,10 +215,14 @@ def index():
     for task in task_data:
         task["duration"] = seconds_to_timestamp(int(task["duration"]))
 
+    calendar_id = "https://calendar.google.com/calendar/embed?src=" + \
+                  get_calendar_id() + "&ctz=Europe/Copenhagen"
+
     context = {
         'weekly': weekly,
         'monthly': monthly,
         'tasks': task_data,
+        'calendar_id': calendar_id,
         'title': 'TimeBuddy',
         'tagline': 'Statistics'
     }

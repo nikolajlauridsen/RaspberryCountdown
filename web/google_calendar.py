@@ -49,8 +49,8 @@ def get_calendar_id():
     It might not be encrypted, but at least it's not public."""
     try:
         calendarId = open(os.path.join('web','calendar_id.txt')).readlines()
-        return calendarId[0][:-1] # Returns the first line containing the key,
-                                  # minus the next line sign
+        return calendarId[0].strip('\n')   # Returns the first line containing
+                                           # the key, minus the next line sign
     except FileNotFoundError:
         return 'primary'
 
