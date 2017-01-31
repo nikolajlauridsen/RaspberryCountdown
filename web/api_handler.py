@@ -8,7 +8,7 @@ class ApiHandler:
         self.api_url = "http://" + settings.host + ":" + str(settings.port)
         # Endpoint shorthands, makes everything a bit prettier
         self.tasks = "/api/tasks/"
-        self.session = "/api/sessions"
+        self.session = "/api/sessions/"
 
     def get_tasks(self, status):
         """Get all tasks from the api database
