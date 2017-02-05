@@ -68,7 +68,7 @@ class StopWatch:
         self.screen.lcd_display_string("Timer stopped".center(16), 1)
         self.screen.lcd_display_string(" "*16, 2)
 
-        while GPIO.input(self.buttons["stop"]) == GPIO.HIGH:
+        while True:
             self.screen.lcd_display_string(self.get_elapsed_string(), 2)
             if GPIO.event_detected(self.buttons["start"]):
                 if self.start_time:
@@ -78,6 +78,9 @@ class StopWatch:
 
             if GPIO.event_detected(self.buttons['back']):
                 self.reset()
+
+            if GPIO.event_detected(self.buttons['stop']):
+                break
             time.sleep(0.2)
 
 
