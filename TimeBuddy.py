@@ -28,10 +28,14 @@ GPIO.setup(buttons['start'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(buttons['stop'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(buttons['back'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(buttons['forward'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+# All switches are equal, but some are more equal than others,
+# a bounce on the stop button can be a major hassle, while it's not as
+# big an issue on back/forward, less bouncetime makes back/forward feel more
+# responsive as well.
 GPIO.add_event_detect(buttons['start'], GPIO.RISING, bouncetime=300)
-GPIO.add_event_detect(buttons['stop'], GPIO.RISING, bouncetime=300)
-GPIO.add_event_detect(buttons['back'], GPIO.RISING, bouncetime=300)
-GPIO.add_event_detect(buttons['forward'], GPIO.RISING, bouncetime=300)
+GPIO.add_event_detect(buttons['stop'], GPIO.RISING, bouncetime=500)
+GPIO.add_event_detect(buttons['back'], GPIO.RISING, bouncetime=200)
+GPIO.add_event_detect(buttons['forward'], GPIO.RISING, bouncetime=200)
 
 # Initialize objects
 screen = lcdDriver.lcd()
