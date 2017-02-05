@@ -65,7 +65,10 @@ class StopWatch:
             return "{}".format(round(elapsed, precision))
 
     def main(self):
-        self.screen.lcd_display_string("Timer stopped".center(16), 1)
+        if self.running:
+            self.screen.lcd_display_string("Running".center(16), 1)
+        else:
+            self.screen.lcd_display_string("Stopped".center(16), 1)
         self.screen.lcd_display_string(" "*16, 2)
 
         while True:
