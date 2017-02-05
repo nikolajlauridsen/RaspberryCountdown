@@ -23,7 +23,7 @@ class PomodoroTimer(CountDown):
         # Initialize object
         self.screen = screen
         self.buttons = buttons
-        self.notify = notifier
+        self.notifier = notifier
         self.calendar = EventCreator()
         self.api_handler = ApiHandler()
 
@@ -69,8 +69,7 @@ class PomodoroTimer(CountDown):
             time.sleep(0.2)
 
         # cycle finished, blink and start new
-        self.notify.blink()
-        self.notify.beep(count=2, beep=0.2, pause=0.1)
+        self.notifier.notify()
         return True
 
     def await_confirmation(self, message):
@@ -86,13 +85,13 @@ class PomodoroTimer(CountDown):
     def start_work(self):
         print('Starting study')
         self.total_cycles += 1
-        self.notify.toggle_led(self.notify.led_green, True)
-        self.notify.toggle_led(self.notify.led_red, False)
+        self.notifier.toggle_led(self.notifier.led_green, True)
+        self.notifier.toggle_led(self.notifier.led_red, False)
         self.next_cycle = self.run_timer(self.study_t, 'Work')
 
     def start_break(self, short):
-        self.notify.toggle_led(self.notify.led_green, False)
-        self.notify.toggle_led(self.notify.led_red, True)
+        self.notifier.toggle_led(self.notifier.led_green, False)
+        self.notifier.toggle_led(self.notifier.led_red, True)
         if short:
             print('Start short break')
             self.next_cycle = self.run_timer(self.short_break, 'Break')
@@ -131,7 +130,7 @@ class PomodoroTimer(CountDown):
 
     def finish_session(self, session_start, task):
         # Session over
-        self.notify.clear_leds()
+        self.notifier.clear_leds()
         self.screen.lcd_display_string('Session ended'.center(16, ' '), 1)
         self.screen.lcd_display_string(' ' * 16, 2)
         time.sleep(0.5)
