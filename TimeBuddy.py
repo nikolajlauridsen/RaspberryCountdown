@@ -46,7 +46,7 @@ stopwatch = StopWatch(screen, notifier, buttons)
 options = [pomodoro, stopwatch]
 
 cursor = 0
-while GPIO.input(buttons["stop"]) == GPIO.HIGH:
+while True:
     screen.lcd_display_string("Select program".center(16), 1)
     screen.lcd_display_string(str(options[cursor]).center(16), 2)
 
@@ -65,10 +65,10 @@ while GPIO.input(buttons["stop"]) == GPIO.HIGH:
     elif GPIO.event_detected(buttons['start']):
         options[cursor].main()
 
+    elif GPIO.event_detected(buttons['stop']):
+        break
+
     time.sleep(0.2)
-
-
-pomodoro.main()
 
 # Program finished
 screen.lcd_clear()
@@ -76,6 +76,6 @@ screen.lcd_display_string('Program ended'.center(16, '~'), 1)
 notifier.blink()
 # Cleanup
 notifier.clean()
-GPIO.cleanup(23)
-GPIO.cleanup(24)
+for button in buttons.values():
+    GPIO.cleanup(button)
 print('Timer finished')

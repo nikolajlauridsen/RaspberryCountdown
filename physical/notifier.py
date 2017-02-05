@@ -80,6 +80,6 @@ class Notifier:
             GPIO.output(led, GPIO.LOW)
 
     def clear_leds(self):
-        """Turn both LEDS off, takes not arguments"""
+        """Turn both LEDS off, takes no arguments"""
         GPIO.output(self.led_green, GPIO.LOW)
         GPIO.output(self.led_red, GPIO.LOW)
