@@ -10,3 +10,12 @@ of resistors, push buttons and LEDs.
 2. the TimeBuddy program.
 
 A proper readme will be writen at some point.
+
+# Dependencies
+* Flask
+* requests
+* google-api-python-client
+* RPi.GPIO
+* sqlite3
+* json
+* threading
