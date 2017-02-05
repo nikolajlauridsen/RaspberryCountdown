@@ -1,8 +1,12 @@
-# RaspberryCountdown
+# TimeBuddy
 
-Just got myself a pi and so of course I have to play around, everything is kinda dirty at the moment, but it's being worked on. 
+Pomodoro timer, and activity tracker. 
 
-It utilizes a 16x2 LCD screen fron sunfounder with an I2C module, as well as 2 buttons, a buzzer and 2 LEDs.
+Built with a raspberry PI, a 16x2 LCD screen with I2C module and a handful
+of resistors, push buttons and LEDs.
 
-There's no schematics or anything at all as of yet
+## TimeBuddy consists of 2 parts
+1. a flask project hosting a web UI and restful API 
+2. the TimeBuddy program.
 
+A proper readme will be writen at some point.
