@@ -60,7 +60,7 @@ class Notifier:
                                         kwargs={"cycles": blinks})
 
         beep_thread = threading.Thread(target=self.beep,
-                                       kwargs={"beeps": beeps,
+                                       kwargs={"count": beeps,
                                                "beep": 0.2,
                                                "pause": 0.1})
         blink_thread.start()
