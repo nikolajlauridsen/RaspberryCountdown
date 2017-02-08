@@ -17,7 +17,7 @@
     color: #36454f;
     text-align: center;
     position: relative;
-    top:40%;
+    top: 40%;
     text-shadow: 3px 3px #d4ddd7;
 }
 
@@ -44,16 +44,16 @@
     background-color: white;
 }
 
-#breakdown th{
+.breakdown th{
     width: auto;
     height: 50px;
-    background-color: cornflowerblue;
+    background-color: #faebd7;
     border: 2px solid black;
     text-align: center;
     padding: 10px;
 }
 
-#inactive-table{
+#inactive{
     display: none;
 }
 

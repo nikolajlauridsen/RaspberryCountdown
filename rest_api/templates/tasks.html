@@ -11,7 +11,7 @@
 <div class="col-md-8">
     <h1>Tasks</h1>
 
-    <a onclick="toggle_visibility('active-table', 'inactive-table')">Toggle active/inactive tasks</a>
+    <button type="button" class="btn btn-info" onclick="toggle_visibility('active-table', 'inactive')">Toggle active/inactive tasks</button>
 
     <div id="active-table">
         <h2>Active tasks</h2>
@@ -36,7 +36,7 @@
         </table>
     </div>
 
-    <div id="inactive-table">
+    <div id="inactive">
         <h2>Inactive tasks</h2>
         <table class="task-panel">
             <tr>

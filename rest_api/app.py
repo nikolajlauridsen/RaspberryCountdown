@@ -213,17 +213,26 @@ def index():
               }
 
     # Pack task data
-    task_data = get_task_breakdown(weekly_data)
-    for task in task_data:
+    # First some weekly data
+    weekly_tasks = get_task_breakdown(weekly_data)
+    for task in weekly_tasks:
         task["duration"] = seconds_to_timestamp(int(task["duration"]))
 
+    # Now some monthly data
+    monthly_tasks = get_task_breakdown(monthly_data)
+    for task in monthly_tasks:
+        task["duration"] = seconds_to_timestamp(int(task["duration"]))
+
+    # Generate the calendar ID based upon the link in calendar_id.txt
     calendar_id = "https://calendar.google.com/calendar/embed?src=" + \
                   get_calendar_id() + "&ctz=Europe/Copenhagen"
 
+    # Put the data into context
     context = {
         'weekly': weekly,
         'monthly': monthly,
-        'tasks': task_data,
+        'weekly_tasks': weekly_tasks,
+        'monthly_tasks': monthly_tasks,
         'calendar_id': calendar_id,
         'title': 'TimeBuddy',
         'tagline': 'Statistics'

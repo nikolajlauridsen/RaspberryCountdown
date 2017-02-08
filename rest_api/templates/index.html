@@ -1,6 +1,9 @@
 <html>
 {% extends "base.html" %}
 {% block title %}TimeBuddy Index{% endblock %}
+{% block code %}
+<script type="text/javascript" src="{{ url_for('static', filename='toggle.js') }}"></script>
+{% endblock %}
 
 {% block content %}
 <div class="col-md-2"></div>
@@ -9,28 +12,49 @@
     <div class="content">
         <div class="padding"></div>
         <H1>Statistics</H1>
+        <button type="button" class="btn btn-info" onclick="toggle_visibility('weekly', 'inactive')">Toggle weekly/monthly</button>
+        <div id="weekly">
+            <h3>Weekly statistics</h3>
+            <p>Sessions: {{data.weekly.count}}</p>
+            <p>Total time spent on pomodoro last week: {{data.weekly.total}}</p>
+            <p>Average session duration: {{data.weekly.average}}</p>
+            <p>Daily time spent on pomodoro: {{data.weekly.daily}}</p>
 
-        <h3>Weekly statistics</h3>
-        <p>Sessions: {{data.weekly.count}}</p>
-        <p>Total time spent on pomodoro last week: {{data.weekly.total}}</p>
-        <p>Average session duration: {{data.weekly.average}}</p>
-        <p>Daily time spent on pomodoro: {{data.weekly.daily}}</p>
+            <H1>Weekly breakdown</H1>
+            <table class="breakdown">
+                <tr>
+                    <th>Task</th>
+                    <th>Sessions</th>
+                    <th>Cycles</th>
+                    <th>Duration</th>
+                </tr>
+                {% for task in data.weekly_tasks %}
+                <tr>
+                    <th>{{task.name}}</th>
+                    <th>{{task.sessions}}</th>
+                    <th>{{task.cycles}}</th>
+                    <th>{{task.duration}}</th>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
 
-        <h3>Monthly statistics</h3>
-        <p>Sessions: {{data.monthly.count}}</p>
-        <p>Total time spent on pomodoro this month: {{data.monthly.total}}</p>
-        <p>Average session duration: {{data.monthly.average}}</p>
-        <p>Daily time spent on pomodoro: {{data.monthly.daily}}</p>
+        <div id="inactive">
+            <h3>Monthly statistics</h3>
+            <p>Sessions: {{data.monthly.count}}</p>
+            <p>Total time spent on pomodoro this month: {{data.monthly.total}}</p>
+            <p>Average session duration: {{data.monthly.average}}</p>
+            <p>Daily time spent on pomodoro: {{data.monthly.daily}}</p>
 
-        <H1>Weekly Task breakdown</H1>
-        <table id="breakdown">
-            <tr>
-                <th>Task</th>
-                <th>Sessions</th>
-                <th>Cycles</th>
-                <th>Duration</th>
-            </tr>
-            {% for task in data.tasks %}
+            <H1>Monthly breakdown</H1>
+            <table class="breakdown">
+                <tr>
+                    <th>Task</th>
+                    <th>Sessions</th>
+                    <th>Cycles</th>
+                    <th>Duration</th>
+                </tr>
+            {% for task in data.monthly_tasks %}
             <tr>
                 <th>{{task.name}}</th>
                 <th>{{task.sessions}}</th>
@@ -38,7 +62,8 @@
                 <th>{{task.duration}}</th>
             </tr>
             {% endfor %}
-        </table>
+            </table>
+        </div>
 
         <div class="padding"></div>
         <H1>Calendar</H1>
