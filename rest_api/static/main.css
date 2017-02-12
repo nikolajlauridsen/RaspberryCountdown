@@ -3,7 +3,7 @@
 }
 
 .padding{
-    padding-top: 15px;
+    padding-top: 10px;
 }
 
 .jumbotron{
@@ -44,13 +44,6 @@
     background-color: white;
 }
 
-.breakdown-table th{
-    width: auto;
-    height: 50px;
-    border: 1px solid black;
-    text-align: center;
-    padding: 10px;
-}
 
 #monthly{
     display: none;
@@ -72,6 +65,3 @@
 
 }
 
-.breakdown{
-    padding-left: 350px;
-}

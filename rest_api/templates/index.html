@@ -12,9 +12,12 @@
     <div class="content">
         <div class="padding"></div>
 
-        <div id="weekly">
-            <h2>Weekly statistics</h2>
-            <div class="statistics">
+        <div id="weekly" class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Weekly</h3>
+            </div>
+
+            <div class="panel-body">
                 <p>Sessions: {{data.weekly.count}}</p>
                 <p>Total time spent on pomodoro last week: {{data.weekly.total}}</p>
                 <p>Average session duration: {{data.weekly.average}}</p>
@@ -22,7 +25,7 @@
             </div>
 
             <div class="breakdown">
-                <table class="breakdown-table">
+                <table class="table">
                     <tr>
                         <th>Task</th>
                         <th>Sessions</th>
@@ -42,9 +45,11 @@
         </div>
 
 
-        <div id="monthly">
-        <h2>Monthly statistics</h2>
-            <div class="statistics">
+        <div id="monthly" class="panel panel-default">
+        <div class="panel-heading">
+            <h3>Monthly</h3>
+        </div>
+            <div class="panel-body">
                 <p>Sessions: {{data.monthly.count}}</p>
                 <p>Total time spent on pomodoro this month: {{data.monthly.total}}</p>
                 <p>Average session duration: {{data.monthly.average}}</p>
@@ -52,7 +57,7 @@
             </div>
 
             <div class="breakdown">
-                <table class="breakdown-table">
+                <table class="table">
                     <tr>
                         <th>Task</th>
                         <th>Sessions</th>
@@ -70,9 +75,9 @@
                 </table>
             </div>
         </div>
+    <button type="button" class="btn btn-info" onclick="toggle_visibility('weekly', 'monthly')">Toggle weekly/monthly</button>
 
         <div class="padding"></div>
-        <button type="button" class="btn btn-info" onclick="toggle_visibility('weekly', 'monthly')">Toggle weekly/monthly</button>
         <H1>Calendar</H1>
         <iframe src="{{data.calendar_id}}" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no"></iframe>
     </div>
