@@ -30,21 +30,6 @@
     text-shadow: 1px 1px #d4ddd7;
 }
 
-.task-panel th{
-    width: auto;
-    height: 50px;
-    background-color: cornflowerblue;
-    border: 2px solid black;
-    text-align: center;
-    padding: 10px;
-}
-
-.task-panel th:nth-child(3n){
-    border: none;
-    background-color: white;
-}
-
-
 #monthly{
     display: none;
 }

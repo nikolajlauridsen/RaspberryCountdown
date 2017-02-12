@@ -11,14 +11,15 @@
 <div class="col-md-8">
     <h1>Tasks</h1>
 
-    <button type="button" class="btn btn-info" onclick="toggle_visibility('active-table', 'inactive')">Toggle active/inactive tasks</button>
-
-    <div id="active-table">
-        <h2>Active tasks</h2>
-        <table class="task-panel">
+    <div class="panel panel-success" id="active-table">
+        <div class="panel-heading">
+            <h2>Active tasks</h2>
+        </div>
+        <table class="table">
             <tr>
                 <th>Task name</th>
                 <th>Date added</th>
+                <th>Deactivate task</th>
             </tr>
             {% for task in data.active_tasks %}
             <tr>
@@ -36,12 +37,15 @@
         </table>
     </div>
 
-    <div id="inactive">
-        <h2>Inactive tasks</h2>
-        <table class="task-panel">
+    <div class="panel panel-danger" id="inactive">
+        <div class="panel-heading">
+            <h2>Inactive tasks</h2>
+        </div>
+        <table class="table">
             <tr>
                 <th>Task name</th>
                 <th>Date added</th>
+                <th>Reactivate task</th>
             </tr>
             {% for task in data.inactive_tasks %}
             <tr>
@@ -59,7 +63,7 @@
         </table>
     </div>
 
-    <br>
+    <button type="button" class="btn btn-info" onclick="toggle_visibility('active-table', 'inactive')">Toggle active/inactive tasks</button>
 
     <h1>New task</h1>
     <form action="/api/tasks/" method="post">
