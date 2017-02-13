@@ -1,10 +1,9 @@
 __pycache__/*
+*.pyc
 TimeBuddy/web/__pycache__/*
 TimeBuddy/physical/__pycache__/*
 TimeBuddy/timers/__pycache__/*
 TimeBuddy/__pycache__/*
-Timebuddy/timers/*.pyc
-Timebuddy/web/*.pyc
 rest_api/__pycache__/*
 database.db
 client_secret.json
