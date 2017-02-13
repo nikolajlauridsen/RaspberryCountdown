@@ -19,10 +19,12 @@ class ActivityTracker(StopWatch):
     def finish_tracker(self, activity):
         end = time.time()
         duration = self.get_elapsed()
+        self.screen.lcd_display_string('Saving event'.center(16, ' '), 2)
         self.api_handler.save_tracker(self.tracker_start, end,
                                       duration, activity)
         summary = "Activity tracker session"
         description = "Activity: {}\nDuration: {}".format(activity, self.get_elapsed_string())
+        self.screen.lcd_display_string('calendar event'.center(16, ' '), 2)
         self.calendar.create_event(summary,
                                    self.tracker_start, end,
                                    description=description)
