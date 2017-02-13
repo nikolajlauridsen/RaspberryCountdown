@@ -55,7 +55,7 @@ class ActivityTracker(StopWatch):
                     self.start()
 
             elif GPIO.event_detected(self.buttons['stop']):
-                self.finish_tracker(activity)
+                self.finish_tracker(activity["name"])
                 self.reset()
                 break
 
@@ -70,6 +70,7 @@ class ActivityTracker(StopWatch):
             if GPIO.event_detected(self.buttons['start']):
                 print('Starting activity tracker')
                 self.run_tracker(activities[cursor])
+                activities = self.api_handler.get_activities('active')
 
             elif GPIO.event_detected(self.buttons['forward']):
                 if cursor < len(activities) - 1:
