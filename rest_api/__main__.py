@@ -124,7 +124,7 @@ def get_task_breakdown(session_data):
     formatted_breakdown = []
     for task in breakdown:
         # Don't copy task if it has no sessions
-        if task["sessions"] > 1:
+        if task["sessions"] > 0:
             try:
                 # Now that we're looping through the tasks we might as well
                 # calculate some averages as well
