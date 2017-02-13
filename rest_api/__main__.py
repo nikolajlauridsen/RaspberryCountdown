@@ -118,17 +118,31 @@ def get_task_breakdown(session_data):
                 task["sessions"] += 1
                 task["cycles"] += session["cycles"]
 
-    # Convert string and calculate averages
+    # Tasks with no sessions are uninteresting and needs to be filtered out
+    # deleting a dictionary from a list is kind of a hassle though,
+    # so the list is copied instead.
+    formatted_breakdown = []
     for task in breakdown:
-        task['durationString'] = seconds_to_timestamp(int(task["duration"]))
-        try:
-            task['cyclesprses'] = task['cycles']/task['sessions']
-            task['avgduration'] = task['duration']/task['sessions']
-        except ZeroDivisionError:
-            task['cyclesprses'] = 0
-            task['avgduration'] = 0
-
-    return breakdown
+        # Don't copy task if it has no sessions
+        if task["sessions"] > 1:
+            try:
+                # Now that we're looping through the tasks we might as well
+                # calculate some averages as well
+                task['cyclesprses'] = round(task['cycles']/task['sessions'], 2)
+                task['avgduration'] = task['duration']/task['sessions']
+            except ZeroDivisionError:  # Belt and suspenders is the new black.
+                task['cyclesprses'] = 0
+                task['avgduration'] = 0
+            # Let's convert seconds to timestamps now that we're at it.
+            task['durationString'] = seconds_to_timestamp(int(task["duration"]))
+            task['avgduration'] = seconds_to_timestamp(int(task['avgduration']))
+            # Append the new task dict to formatted_breakdown
+            formatted_breakdown.append(task)
+        else:
+            # Skip tasks with no sessions
+            pass
+    # Return the formatted breakdown
+    return formatted_breakdown
 
 
 @TimeBuddy.route('/api/sessions/', methods=['GET', 'POST'])

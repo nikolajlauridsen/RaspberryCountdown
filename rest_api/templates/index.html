@@ -43,6 +43,8 @@
                         <th>{{task.avgduration}}</th>
                         <th>{{task.durationString}}</th>
                     </tr>
+                    {% else %}
+                        <th colspan="6">No tasks with session data.</th>
                     {% endfor %}
                 </table>
             </div>
