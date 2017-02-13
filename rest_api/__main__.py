@@ -207,39 +207,57 @@ def index():
     """Index page to show statistics"""
     # Pack monthly data
     monthly_data = get_last_month()
+    monthly_tasks = get_task_breakdown(monthly_data)
     m_duration_sum = get_duration_sum(monthly_data)
-    try:
-        m_sum = m_duration_sum/30
-        daily_month = m_duration_sum/len(monthly_data)
-    except ZeroDivisionError:
-        m_sum = 0
-        daily_month = 0
 
-    monthly = {'count': len(monthly_data),
-               'average': seconds_to_timestamp(daily_month),
-               'daily': seconds_to_timestamp(m_sum),
-               'total': seconds_to_timestamp(m_duration_sum)
+    month_cycle_count = 0
+    for task in monthly_tasks:
+        month_cycle_count += task['cycles']
+    month_sesh_count = len(monthly_data)
+
+    try:
+        month_avg_daily = m_duration_sum/30
+        duration_average_month = m_duration_sum/len(monthly_data)
+        avg_monthly_cycles = round(month_cycle_count/month_sesh_count, 2)
+    except ZeroDivisionError:
+        avg_monthly_cycles = 0
+        month_avg_daily = 0
+        duration_average_month = 0
+
+    monthly = {'count': month_sesh_count,
+               'average': seconds_to_timestamp(duration_average_month),
+               'daily': seconds_to_timestamp(month_avg_daily),
+               'total': seconds_to_timestamp(m_duration_sum),
+               'totalcycles': month_cycle_count,
+               'cyclesprsession': avg_monthly_cycles
                }
 
     # Pack weekly data
     weekly_data = get_last_week()
-    w_duration_sum = get_duration_sum(weekly_data)
-    try:
-        w_avg = w_duration_sum / 7
-        daily_week = w_duration_sum/len(weekly_data)
-    except ZeroDivisionError:
-        w_avg = 0
-        daily_week = 0
-
-    weekly = {'count': len(weekly_data),
-              'average': seconds_to_timestamp(daily_week),
-              'daily': seconds_to_timestamp(w_avg),
-              'total': seconds_to_timestamp(w_duration_sum)
-              }
-
-    # Pack task data
     weekly_tasks = get_task_breakdown(weekly_data)
-    monthly_tasks = get_task_breakdown(monthly_data)
+    w_duration_sum = get_duration_sum(weekly_data)
+
+    weekly_cycles = 0
+    for task in weekly_tasks:
+        weekly_cycles += task['cycles']
+    weekly_sessions = len(weekly_data)
+
+    try:
+        w_avg_daily = w_duration_sum / 7
+        duration_average_week = w_duration_sum/len(weekly_data)
+        avg_weekly_cycles = round(weekly_cycles / weekly_sessions, 2)
+    except ZeroDivisionError:
+        w_avg_daily = 0
+        duration_average_week = 0
+        avg_weekly_cycles = 0
+
+    weekly = {'count': weekly_sessions,
+              'average': seconds_to_timestamp(duration_average_week),
+              'daily': seconds_to_timestamp(w_avg_daily),
+              'total': seconds_to_timestamp(w_duration_sum),
+              'totalcycles': weekly_cycles,
+              'cyclesprsession': avg_weekly_cycles
+              }
 
     # Generate the calendar ID based upon the link in calendar_id.txt
     calendar_id = "https://calendar.google.com/calendar/embed?src=" + \

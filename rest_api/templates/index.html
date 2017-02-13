@@ -18,9 +18,6 @@
             </div>
 
             <div class="panel-body">
-                <p>Sessions: {{data.weekly.count}}</p>
-                <p>Total time spent on pomodoro last week: {{data.weekly.total}}</p>
-                <p>Average session duration: {{data.weekly.average}}</p>
                 <p>Daily time spent on pomodoro: {{data.weekly.daily}}</p>
             </div>
 
@@ -46,6 +43,14 @@
                     {% else %}
                         <th colspan="6">No tasks with session data.</th>
                     {% endfor %}
+                    <tr>
+                        <th>Total</th>
+                        <th>{{ data.weekly.count }}</th>
+                        <th>{{ data.weekly.totalcycles }}</th>
+                        <th>{{ data.weekly.cyclesprsession }}</th>
+                        <th>{{ data.weekly.average }}</th>
+                        <th>{{ data.weekly.total }}</th>
+                    </tr>
                 </table>
             </div>
         </div>
@@ -56,9 +61,6 @@
             <h3>Monthly</h3>
         </div>
             <div class="panel-body">
-                <p>Sessions: {{data.monthly.count}}</p>
-                <p>Total time spent on pomodoro this month: {{data.monthly.total}}</p>
-                <p>Average session duration: {{data.monthly.average}}</p>
                 <p>Daily time spent on pomodoro: {{data.monthly.daily}}</p>
             </div>
 
@@ -81,7 +83,17 @@
                     <th>{{task.avgduration}}</th>
                     <th>{{task.durationString}}</th>
                 </tr>
+                {% else %}
+                 <th colspan="6">No tasks with session data.</th>
                 {% endfor %}
+                <tr>
+                    <th>Total</th>
+                    <th>{{ data.monthly.count }}</th>
+                    <th>{{ data.monthly.totalcycles }}</th>
+                    <th>{{ data.monthly.cyclesprsession }}</th>
+                    <th>{{ data.monthly.average }}</th>
+                    <th>{{ data.monthly.total }}</th>
+                    </tr>
                 </table>
             </div>
         </div>
