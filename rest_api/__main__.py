@@ -10,9 +10,11 @@ that facilitate features in TimeBuddy
 import sqlite3
 import time
 from datetime import datetime
-from flask import Flask, jsonify, g, request, render_template, url_for, redirect
+from flask import Flask, jsonify, g, request, render_template, url_for,\
+    redirect, send_from_directory
 from utils import *
 import settings
+import os
 
 DATABASE = 'database.db'
 
@@ -49,6 +51,14 @@ def close_connection(exception):
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()
+
+
+@TimeBuddy.route('/favicon.ico')
+def favicon():
+    """This is needed for some old browsers"""
+    return send_from_directory(os.path.join(TimeBuddy.root_path, 'static'),
+                               'favicon.ico',
+                               mimetype='image/vnd.microsoft.icon')
 
 
 def query_db(query, args=(), one=False, commit=False):
