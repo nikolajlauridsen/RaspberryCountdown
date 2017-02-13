@@ -126,6 +126,12 @@
                         <th colspan="4">No activities with data.</th>
                     </tr>
                     {% endfor %}
+                    <tr>
+                        <th>Total</th>
+                        <th>{{ data.weekly_activities.total_count }}</th>
+                        <th>{{ data.weekly_activities.duration_sum }}</th>
+                        <th>{{ data.weekly_activities.avg_duration }}</th>
+                    </tr>
                 </table>
             </div>
 
@@ -152,6 +158,12 @@
                         <th colspan="4">No activities with data.</th>
                     </tr>
                     {% endfor %}
+                    <tr>
+                        <th>Total</th>
+                        <th>{{ data.monthly_activities.total_count }}</th>
+                        <th>{{ data.monthly_activities.duration_sum }}</th>
+                        <th>{{ data.monthly_activities.avg_duration }}</th>
+                    </tr>
                 </table>
             </div>
         <button type="button" class="btn btn-info" onclick="toggle_visibility('weekly_acti', 'monthly_acti')">Toggle weekly/monthly</button>

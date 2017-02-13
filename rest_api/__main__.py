@@ -127,15 +127,20 @@ def get_activity_breakdown(activity_data, span=7):
             activity['durationString'] = seconds_to_timestamp(activity['duration'])
             activity['avgduration'] = seconds_to_timestamp(activity['avgduration'])
             duration_sum += activity['duration']
-            total_count += 1
+            total_count += activity['count']
             formatted_data.append(activity)
         else:
             pass
 
     if len(formatted_data) > 0:
+        try:
+            avg_duration = seconds_to_timestamp(duration_sum/total_count)
+        except ZeroDivisionError:
+            avg_duration = seconds_to_timestamp(0)
         context = {
             'total_count': total_count,
             'duration_sum': seconds_to_timestamp(duration_sum),
+            'avg_duration': avg_duration,
             'breakdown': formatted_data
         }
         return context
