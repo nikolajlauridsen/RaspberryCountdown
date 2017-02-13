@@ -113,7 +113,7 @@ def get_activity_breakdown(activity_data, span=7):
     for datapoint in activity_data:
         for activity in breakdown:
             if datapoint['activity'] == activity['name']:
-                activity['duration'] += activity['duration']
+                activity['duration'] += datapoint['duration']
                 activity['count'] += 1
     formatted_data = []
     duration_sum = 0
@@ -141,6 +141,7 @@ def get_activity_breakdown(activity_data, span=7):
         return context
     else:
         return []
+
 
 def get_task_breakdown(session_data):
     """
@@ -410,14 +411,13 @@ def index():
     calendar_id = "https://calendar.google.com/calendar/embed?src=" + \
                   get_calendar_id() + "&ctz=Europe/Copenhagen"
 
-    monthly_activities = query_db("SELECT * FROM timetrack "
-                                  "WHERE datetime(startTime, 'unixepoch') >= "
-                                  "DATE('now', '-30 days')")
+    query = "SELECT * FROM timetrack" \
+            " WHERE datetime(startTime, 'unixepoch') >= DATE('now', '-30 days')"
+    monthly_activities = query_db(query)
     monthly_activities = get_activity_breakdown(monthly_activities, span=30)
-
-    weekly_activities = query_db("SELECT * FROM timetrack "
-                                 "WHERE datetime(startTime, 'unixepoch') >= "
-                                 "DATE('now', '-7 days')")
+    query = "SELECT * FROM timetrack" \
+            " WHERE datetime(startTime, 'unixepoch') >= DATE('now', '-7 days')"
+    weekly_activities = query_db(query)
     weekly_activities = get_activity_breakdown(weekly_activities, span=7)
     # Put the data into context
     context = {
