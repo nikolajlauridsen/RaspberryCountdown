@@ -1,6 +1,8 @@
 __pycache__/*
-web/__pycache__/*
+TimeBuddy/web/__pycache__/*
+TimeBuddy/__pycache__/*
+rest_api/__pycache__/*
+database.db
+client_secret.json
+calendar_id.txt
 .idea/*
-web/client_secret.json
-/web/calendar_id.txt
-/rest_api/database.db
