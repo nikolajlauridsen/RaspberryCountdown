@@ -16,9 +16,9 @@ class StopWatch:
     def __repr__(self):
         return "StopWatch"
 
-    def start(self):
+    def start(self, msg="Running"):
         print("clock started")
-        self.screen.lcd_display_string("Running".center(16), 1)
+        self.screen.lcd_display_string(msg.center(16), 1)
         self.start_time = time.time()
         self.running = True
 
@@ -29,14 +29,14 @@ class StopWatch:
         self.pause_data = []
         self.running = False
 
-    def toggle_pause(self):
+    def toggle_pause(self, msg="Running"):
         if self.running:
             print("clock paused")
             self.screen.lcd_display_string("Paused".center(16), 1)
             self.pause_data.append(self.get_elapsed())
             self.running = False
         else:
-            self.start()
+            self.start(msg=msg)
 
     def get_elapsed(self):
         if self.running:
@@ -54,17 +54,17 @@ class StopWatch:
         if 60 < elapsed < 3600:
             mins = elapsed // 60
             s = elapsed % 60
-            return "{}:{}".format(int(mins), round(s, precision))
+            return "{}:{}".format(int(mins), int(s))
 
         elif elapsed > 3600:
             hrs = elapsed // 3600
             hrs_remainder = elapsed % 3600
             mins = hrs_remainder // 60
             s = hrs_remainder % 60
-            return "{}:{}:{}".format(int(hrs), int(mins), round(s, precision))
+            return "{:02}:{:02}:{:02}".format(int(hrs), int(mins), int(s))
 
         else:
-            return "{}".format(round(elapsed, precision))
+            return "{:02}".format(int(elapsed))
 
     def main(self):
         if self.running:

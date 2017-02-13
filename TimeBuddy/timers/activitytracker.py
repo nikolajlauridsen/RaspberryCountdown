@@ -39,9 +39,9 @@ class ActivityTracker(StopWatch):
     def run_tracker(self, activity):
         # update screen
         if self.running:
-            self.screen.lcd_display_string("Running".center(16), 1)
+            self.screen.lcd_display_string(activity.center(16), 1)
         else:
-            self.screen.lcd_display_string("Stopped".center(16), 1)
+            self.screen.lcd_display_string("Paused".center(16), 1)
         self.screen.lcd_display_string(" "*16, 2)
 
         # Tracker loop
@@ -49,10 +49,10 @@ class ActivityTracker(StopWatch):
             self.screen.lcd_display_string(self.get_elapsed_string(), 2)
             if GPIO.event_detected(self.buttons['start']):
                 if self.start_time:
-                    self.toggle_pause()
+                    self.toggle_pause(msg=activity['name'])
                 else:
                     self.tracker_start = time.time()
-                    self.start()
+                    self.start(msg=activity['name'])
 
             elif GPIO.event_detected(self.buttons['stop']):
                 self.finish_tracker(activity["name"])
