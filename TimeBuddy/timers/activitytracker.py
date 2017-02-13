@@ -1,7 +1,7 @@
 from .stopwatch import StopWatch
 import RPi.GPIO as GPIO
-from TimeBuddy.web.google_calendar import EventCreator
-from TimeBuddy.web.api_handler import ApiHandler
+from web.google_calendar import EventCreator
+from web.api_handler import ApiHandler
 import time
 
 

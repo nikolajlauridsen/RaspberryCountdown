@@ -2,11 +2,11 @@ import time
 
 import RPi.GPIO as GPIO
 
-from TimeBuddy.timers.pomodoro import PomodoroTimer
-from TimeBuddy.timers.stopwatch import StopWatch
-from TimeBuddy.timers.activitytracker import ActivityTracker
-from TimeBuddy.physical.notifier import Notifier
-from TimeBuddy.physical import LCD_driver as lcdDriver
+from timers.pomodoro import PomodoroTimer
+from timers.stopwatch import StopWatch
+from timers.activitytracker import ActivityTracker
+from physical.notifier import Notifier
+from physical import LCD_driver as lcdDriver
 
 # Buttons dictionary
 buttons = {
