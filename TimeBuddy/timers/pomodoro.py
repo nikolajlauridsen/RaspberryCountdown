@@ -154,21 +154,25 @@ class PomodoroTimer(CountDown):
         time.sleep(0.5)
         print('Session finished')
 
+    @staticmethod
+    def generate_cursor(message, cursor, cursor_max):
+        """Generate a cursor string formatted for the LCD screen"""
+        # Cursor string ie: 1/4 (task 1 out of 4)
+        cursor_string = '{}/{}'.format(cursor, cursor_max)
+        # Amount of needed to fill screen
+        spaces = 16 - (len(message) + len(cursor_string))
+        if spaces < 0:  # We can't have negative spaces
+            spaces = 0
+        return '{}{}{}'.format(message, ' ' * spaces, cursor_string)
+
     def main(self):
         """Main loop, displays title and awaits input, then runs a session"""
         tasks = self.api_handler.get_tasks("active")
         cursor = 0
+        message = 'Choose task'
+        cursor_string = self.generate_cursor(message, cursor + 1, len(tasks))
         while True:
-            # Message to displayed next to the cursor
-            message = 'Choose task'
-            # Cursor string ie: 1/4 (task 1 out of 4)
-            cursor_string = '{}/{}'.format(cursor+1, len(tasks))
-            # Amount of needed to fill screen
-            spaces = 16 - (len(message) + len(cursor_string))
-            if spaces < 0:  # We can't have negative spaces
-                spaces = 0
-            top_string = '{}{}{}'.format(message, ' '*spaces, cursor_string)
-            self.screen.lcd_display_string(top_string, 1)
+            self.screen.lcd_display_string(cursor_string, 1)
             self.screen.lcd_display_string(tasks[cursor]["name"].center(16, ' '), 2)
 
             if GPIO.event_detected(self.buttons['start']):
@@ -183,12 +187,17 @@ class PomodoroTimer(CountDown):
                     cursor += 1
                 else:
                     cursor = 0
+                # Update cursor string
+                cursor_string = self.generate_cursor(message, cursor+1,
+                                                     len(tasks))
 
             elif GPIO.event_detected(self.buttons['back']):
                 if cursor > 0:
                     cursor -= 1
                 else:
                     cursor = len(tasks)-1
+                cursor_string = self.generate_cursor(message, cursor + 1,
+                                                     len(tasks))
 
             elif GPIO.event_detected(self.buttons['stop']):
                 break
