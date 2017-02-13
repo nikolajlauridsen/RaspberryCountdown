@@ -69,7 +69,7 @@ class EventCreator:
         start = datetime.datetime.fromtimestamp(start).strftime('%Y-%m-%dT%H:%M:%S')
         end = datetime.datetime.fromtimestamp(end).strftime('%Y-%m-%dT%H:%M:%S')
         print(start + '\n' + end)
-        timezone = 'Europe/Berlin'
+        timezone = 'Europe/Copenhagen'
 
         event = {
             'summary': summary,
