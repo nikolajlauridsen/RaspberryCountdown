@@ -165,6 +165,9 @@ class PomodoroTimer(CountDown):
             if GPIO.event_detected(self.buttons['start']):
                 print('session')
                 self.run_session(tasks[cursor]["name"])
+                # Update tasks after ended session, thus making sure
+                # a user doesn't accidentally pick an inactive task
+                tasks = self.api_handler.get_tasks("active")
 
             elif GPIO.event_detected(self.buttons['forward']):
                 if cursor < len(tasks)-1:
