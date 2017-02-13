@@ -159,7 +159,16 @@ class PomodoroTimer(CountDown):
         tasks = self.api_handler.get_tasks("active")
         cursor = 0
         while True:
-            self.screen.lcd_display_string('Choose task'.center(16, ' '), 1)
+            # Message to displayed next to the cursor
+            message = 'Choose task'
+            # Cursor string ie: 1/4 (task 1 out of 4)
+            cursor_string = '{}/{}'.format(cursor+1, len(tasks))
+            # Amount of needed to fill screen
+            spaces = 16 - (len(message) + len(cursor_string))
+            if spaces < 0:  # We can't have negative spaces
+                spaces = 0
+            top_string = '{} {}/{}'.format(message, ' '*spaces, cursor_string)
+            self.screen.lcd_display_string(top_string, 1)
             self.screen.lcd_display_string(tasks[cursor]["name"].center(16, ' '), 2)
 
             if GPIO.event_detected(self.buttons['start']):
