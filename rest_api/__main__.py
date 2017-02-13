@@ -164,7 +164,7 @@ def sessions():
 
 @TimeBuddy.route('/api/tasks/', methods=['GET', 'POST'])
 def tasks_api():
-
+    """Get all tasks as json or insert a new task"""
     if request.method == 'GET':
         if request.form['active'] == "1":
             tasks_data = query_db('SELECT * FROM tasks WHERE active > 0')
@@ -183,6 +183,7 @@ def tasks_api():
 
 @TimeBuddy.route('/api/tasks/toggle', methods=['POST'])
 def toggle_task():
+    """Toggle the active status of a task"""
     query_db("UPDATE tasks SET active=(?) WHERE name=(?)",
              [request.form['status'], request.form['name']], commit=True)
     return redirect(url_for(endpoint='tasks'))
@@ -195,10 +196,13 @@ def delete_task():
     task = query_db("SELECT active FROM tasks WHERE name=(?)",
                     [request.form['name']], one=True)
     if task['active'] == 0:
+        # First delete all the session data belonging to the task
         query_db("DELETE FROM pomodoro WHERE task=(?)",
                  [request.form['name']], commit=True),
+        # Then delete the task itself
         query_db("DELETE FROM tasks WHERE name=(?)",
                  [request.form['name']], commit=True)
+        # Redirect the user back
         return redirect(url_for(endpoint='tasks'))
     else:
         return """Task still active, please deactivate it first"""
@@ -223,23 +227,35 @@ def index():
     """Index page to show statistics"""
     # Pack monthly data
     monthly_data = get_last_month()
+    # Monthly tasks will be added to context by itself
     monthly_tasks = get_task_breakdown(monthly_data)
+    # The sum of all the sessions duration
     m_duration_sum = get_duration_sum(monthly_data)
 
+    # Calculate total cycle count based off monthly tasks
     month_cycle_count = 0
     for task in monthly_tasks:
         month_cycle_count += task['cycles']
+    # Monthly session count is equal to the amount of data in monthly data
+    # since 1 session = 1 data point
     month_sesh_count = len(monthly_data)
 
     try:
+        # Try to calculate averages
+        # Average daily time spent pomodoroing
         month_avg_daily = m_duration_sum/30
+        # Average session duration
         duration_average_month = m_duration_sum/len(monthly_data)
+        # Average amount of work cycles per sessions
         avg_monthly_cycles = round(month_cycle_count/month_sesh_count, 2)
     except ZeroDivisionError:
+        # Don't blow up the universe
         avg_monthly_cycles = 0
         month_avg_daily = 0
         duration_average_month = 0
 
+    # Pack it all neat like into its very own dictionary
+    # Except for monthly_task since it's added by it's own
     monthly = {'count': month_sesh_count,
                'average': seconds_to_timestamp(duration_average_month),
                'daily': seconds_to_timestamp(month_avg_daily),
@@ -249,6 +265,8 @@ def index():
                }
 
     # Pack weekly data
+    # This follows exactly the same procedure as monthly
+    # I should really have made a function for this
     weekly_data = get_last_week()
     weekly_tasks = get_task_breakdown(weekly_data)
     w_duration_sum = get_duration_sum(weekly_data)
@@ -294,6 +312,7 @@ def index():
 
 @TimeBuddy.route('/tasks/', methods=['GET'])
 def tasks():
+    """Task page for activating/deactivating/deleting tasks"""
     active_tasks = query_db('SELECT * FROM tasks WHERE active > 0')
     inactive_tasks = query_db('SELECT * FROM tasks WHERE active < 1')
 
