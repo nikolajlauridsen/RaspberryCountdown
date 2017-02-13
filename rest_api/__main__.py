@@ -231,7 +231,7 @@ def activities_api():
         return jsonify(results=activities_data)
 
     elif request.method == 'POST':
-        query_db("INSERT INTO activities VALUE (?, ?, 1)",
+        query_db("INSERT INTO activities VALUES (?, ?, 1)",
                  [int(time.time()), request.form['name']], commit=True)
         return redirect(url_for(endpoint='activities'))
 
