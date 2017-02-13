@@ -98,7 +98,7 @@ def get_last_month():
     return monthly_sessions
 
 
-def get_activity_breakdown(span=7):
+def get_activity_breakdown(activity_data, span=7):
     activity_names = query_db("SELECT name from activities")
     breakdown = []
 
@@ -108,10 +108,7 @@ def get_activity_breakdown(span=7):
                     'count': 0}
         breakdown.append(activity)
 
-    days_string = '-{} days'.format(span)
-    activity_data = query_db("SELECT * FROM timetrack "
-                             "WHERE datetime(startTime, 'unixepoch') >= "
-                             "DATE('now', (?))", [days_string])
+    activity_data = activity_data
 
     for datapoint in activity_data:
         for activity in breakdown:
@@ -413,8 +410,15 @@ def index():
     calendar_id = "https://calendar.google.com/calendar/embed?src=" + \
                   get_calendar_id() + "&ctz=Europe/Copenhagen"
 
-    monthly_activities = get_activity_breakdown(span=30)
-    weekly_activities = get_activity_breakdown(span=7)
+    monthly_activities = query_db("SELECT * FROM timetrack "
+                                  "WHERE datetime(startTime, 'unixepoch') >= "
+                                  "DATE('now', '-30 days')")
+    monthly_activities = get_activity_breakdown(monthly_activities, span=30)
+
+    weekly_activities = query_db("SELECT * FROM timetrack "
+                                 "WHERE datetime(startTime, 'unixepoch') >= "
+                                 "DATE('now', '-7 days')")
+    weekly_activities = get_activity_breakdown(weekly_activities, span=7)
     # Put the data into context
     context = {
         'weekly': weekly,
