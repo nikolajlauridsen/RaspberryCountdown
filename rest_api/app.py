@@ -117,6 +117,18 @@ def get_task_breakdown(session_data):
                 task["duration"] += session["duration"]
                 task["sessions"] += 1
                 task["cycles"] += session["cycles"]
+
+
+    # Convert string
+    for task in breakdown:
+        task['durationString'] = seconds_to_timestamp(int(task["duration"]))
+        try:
+            task['cyclesprses'] = task['cycles']/task['sessions']
+            task['avgduration'] = task['duration']/task['sessions']
+        except ZeroDivisionError:
+            task['cyclesprses'] = 0
+            task['avgduration'] = 0
+
     return breakdown
 
 
@@ -213,15 +225,8 @@ def index():
               }
 
     # Pack task data
-    # First some weekly data
     weekly_tasks = get_task_breakdown(weekly_data)
-    for task in weekly_tasks:
-        task["duration"] = seconds_to_timestamp(int(task["duration"]))
-
-    # Now some monthly data
     monthly_tasks = get_task_breakdown(monthly_data)
-    for task in monthly_tasks:
-        task["duration"] = seconds_to_timestamp(int(task["duration"]))
 
     # Generate the calendar ID based upon the link in calendar_id.txt
     calendar_id = "https://calendar.google.com/calendar/embed?src=" + \

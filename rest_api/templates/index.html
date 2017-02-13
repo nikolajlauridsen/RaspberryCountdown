@@ -30,14 +30,18 @@
                         <th>Task</th>
                         <th>Sessions</th>
                         <th>Cycles</th>
-                        <th>Duration</th>
+                        <th>Cycles per session</th>
+                        <th>Avg session duration</th>
+                        <th>Total Duration</th>
                     </tr>
                     {% for task in data.weekly_tasks %}
                     <tr>
                         <th>{{task.name}}</th>
                         <th>{{task.sessions}}</th>
                         <th>{{task.cycles}}</th>
-                        <th>{{task.duration}}</th>
+                        <th>{{task.cyclesprses}}</th>
+                        <th>{{task.avgduration}}</th>
+                        <th>{{task.durationString}}</th>
                     </tr>
                     {% endfor %}
                 </table>
@@ -62,14 +66,18 @@
                         <th>Task</th>
                         <th>Sessions</th>
                         <th>Cycles</th>
-                        <th>Duration</th>
+                        <th>Cycles per session</th>
+                        <th>Avg session duration</th>
+                        <th>Total Duration</th>
                     </tr>
                 {% for task in data.monthly_tasks %}
                 <tr>
                     <th>{{task.name}}</th>
                     <th>{{task.sessions}}</th>
                     <th>{{task.cycles}}</th>
-                    <th>{{task.duration}}</th>
+                    <th>{{task.cyclesprses}}</th>
+                    <th>{{task.avgduration}}</th>
+                    <th>{{task.durationString}}</th>
                 </tr>
                 {% endfor %}
                 </table>
