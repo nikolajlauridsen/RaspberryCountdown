@@ -66,8 +66,8 @@ class EventCreator:
 
     def create_event(self, summary, start, end, description=' '):
         # TODO: consider timezones
-        start = datetime.datetime.utcfromtimestamp(start).strftime('%Y-%m-%dT%H:%M:%S')
-        end = datetime.datetime.utcfromtimestamp(end).strftime('%Y-%m-%dT%H:%M:%S')
+        start = datetime.datetime.fromtimestamp(start).strftime('%Y-%m-%dT%H:%M:%S')
+        end = datetime.datetime.fromtimestamp(end).strftime('%Y-%m-%dT%H:%M:%S')
         print(start + '\n' + end)
         timezone = 'Europe/Berlin'
 
