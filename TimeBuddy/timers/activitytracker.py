@@ -46,7 +46,7 @@ class ActivityTracker(StopWatch):
 
         # Tracker loop
         while True:
-            self.screen.lcd_display_string(self.get_elapsed_string(), 2)
+            self.screen.lcd_display_string(self.get_elapsed_string().center(16, ' '), 2)
             if GPIO.event_detected(self.buttons['start']):
                 if self.start_time:
                     self.toggle_pause(msg=activity['name'])
