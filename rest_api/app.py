@@ -118,8 +118,7 @@ def get_task_breakdown(session_data):
                 task["sessions"] += 1
                 task["cycles"] += session["cycles"]
 
-
-    # Convert string
+    # Convert string and calculate averages
     for task in breakdown:
         task['durationString'] = seconds_to_timestamp(int(task["duration"]))
         try:
