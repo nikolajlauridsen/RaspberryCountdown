@@ -201,5 +201,4 @@ class PomodoroTimer(CountDown):
 
             elif GPIO.event_detected(self.buttons['stop']):
                 break
-
-        time.sleep(0.2)
+            time.sleep(0.2)
