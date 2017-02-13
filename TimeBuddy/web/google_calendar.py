@@ -11,7 +11,7 @@ from oauth2client.file import Storage
 # If modifying these scopes, delete your previously saved credentials
 # at ~/.credentials/calendar-python-quickstart.json
 SCOPES = 'https://www.googleapis.com/auth/calendar'
-CLIENT_SECRET_FILE = os.path.join('web', 'client_secret.json')
+CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'Raspberry LCD pomodoro timer'
 
 
@@ -48,10 +48,11 @@ def get_calendar_id():
     """Secret ids and keys is bad juju in source code
     It might not be encrypted, but at least it's not public."""
     try:
-        calendarId = open(os.path.join('web','calendar_id.txt')).readlines()
+        calendarId = open('calendar_id.txt').readlines()
         return calendarId[0].strip('\n')   # Returns the first line containing
                                            # the key, minus the next line sign
     except FileNotFoundError:
+        print('calendar_id.txt not found, saving to primary calendar')
         return 'primary'
 
 

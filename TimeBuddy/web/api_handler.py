@@ -1,11 +1,12 @@
 import requests
 import json
-import rest_api.settings as settings
 
 
 class ApiHandler:
     def __init__(self):
-        self.api_url = "http://" + settings.host + ":" + str(settings.port)
+        self.api_ip = "0.0.0.0"
+        self.api_port = "3000"
+        self.api_url = "http://" + self.api_ip + ":" + self.api_port
         # Endpoint shorthands, makes everything a bit prettier
         self.tasks = "/api/tasks/"
         self.session = "/api/sessions/"
