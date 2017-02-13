@@ -98,6 +98,53 @@ def get_last_month():
     return monthly_sessions
 
 
+def get_activity_breakdown(span=7):
+    activity_names = query_db("SELECT name from activities")
+    breakdown = []
+
+    for activity in activity_names:
+        activity = {'name': activity["name"],
+                    'duration': 0,
+                    'count': 0}
+        breakdown.append(activity)
+
+    days_string = '-{} days'.format(span)
+    activity_data = query_db("SELECT * FROM timetrack "
+                             "WHERE datetime(startTime, 'unixepoch') >= "
+                             "DATE('now', (?))", [days_string])
+
+    for datapoint in activity_data:
+        for activity in breakdown:
+            if datapoint['activity'] == activity['name']:
+                activity['duration'] += activity['duration']
+                activity['count'] += 1
+    formatted_data = []
+    duration_sum = 0
+    total_count = 0
+    for activity in breakdown:
+        if activity['count'] > 0:
+            try:
+                activity['avgduration'] = activity['duration']/activity['count']
+            except ZeroDivisionError:
+                activity['avgduration'] = 0
+            activity['durationString'] = seconds_to_timestamp(activity['duration'])
+            activity['avgduration'] = seconds_to_timestamp(activity['avgduration'])
+            duration_sum += activity['duration']
+            total_count += 1
+            formatted_data.append(activity)
+        else:
+            pass
+
+    if len(formatted_data) > 0:
+        context = {
+            'total_count': total_count,
+            'duration_sum': seconds_to_timestamp(duration_sum),
+            'breakdown': formatted_data
+        }
+        return context
+    else:
+        return []
+
 def get_task_breakdown(session_data):
     """
     Creates a list of task dictionaries
@@ -366,12 +413,16 @@ def index():
     calendar_id = "https://calendar.google.com/calendar/embed?src=" + \
                   get_calendar_id() + "&ctz=Europe/Copenhagen"
 
+    monthly_activities = get_activity_breakdown(span=30)
+    weekly_activities = get_activity_breakdown(span=7)
     # Put the data into context
     context = {
         'weekly': weekly,
         'monthly': monthly,
         'weekly_tasks': weekly_tasks,
         'monthly_tasks': monthly_tasks,
+        'monthly_activities': monthly_activities,
+        'weekly_activities': weekly_activities,
         'calendar_id': calendar_id,
         'title': 'TimeBuddy',
         'tagline': 'Statistics'

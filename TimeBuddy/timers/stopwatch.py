@@ -48,13 +48,13 @@ class StopWatch:
             elapsed += duration
         return elapsed
 
-    def get_elapsed_string(self, precision=2):
+    def get_elapsed_string(self):
         elapsed = self.get_elapsed()
 
         if 60 < elapsed < 3600:
             mins = elapsed // 60
             s = elapsed % 60
-            return "{}:{}".format(int(mins), int(s))
+            return "{:02}:{:02}".format(int(mins), int(s))
 
         elif elapsed > 3600:
             hrs = elapsed // 3600

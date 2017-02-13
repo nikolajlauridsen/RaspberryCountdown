@@ -38,6 +38,14 @@
     display: none;
 }
 
+#activity_tracker{
+    display: none;
+}
+
+#monthly_acti{
+    display: none;
+}
+
 .toggle{
     height: 20px;
     width: 10px;

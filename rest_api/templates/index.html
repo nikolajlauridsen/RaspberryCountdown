@@ -12,26 +12,70 @@
     <div class="content">
         <div class="padding"></div>
 
-        <div id="weekly" class="panel panel-primary">
-            <div class="panel-heading">
-                <h3>Weekly</h3>
+        <div id="pomodoro">
+            <div id="weekly" class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3>Pomodoro Weekly</h3>
+                </div>
+
+                <div class="panel-body">
+                    <p>Daily time spent on pomodoro: {{data.weekly.daily}}</p>
+                </div>
+
+                <div class="breakdown">
+                    <table class="table">
+                        <tr>
+                            <th>Task</th>
+                            <th>Sessions</th>
+                            <th>Cycles</th>
+                            <th>Cycles per session</th>
+                            <th>Avg session duration</th>
+                            <th>Total Duration</th>
+                        </tr>
+                        {% for task in data.weekly_tasks %}
+                        <tr>
+                            <th>{{task.name}}</th>
+                            <th>{{task.sessions}}</th>
+                            <th>{{task.cycles}}</th>
+                            <th>{{task.cyclesprses}}</th>
+                            <th>{{task.avgduration}}</th>
+                            <th>{{task.durationString}}</th>
+                        </tr>
+                        {% else %}
+                            <th colspan="6">No tasks with session data.</th>
+                        {% endfor %}
+                        <tr>
+                            <th>Total</th>
+                            <th>{{ data.weekly.count }}</th>
+                            <th>{{ data.weekly.totalcycles }}</th>
+                            <th>{{ data.weekly.cyclesprsession }}</th>
+                            <th>{{ data.weekly.average }}</th>
+                            <th>{{ data.weekly.total }}</th>
+                        </tr>
+                    </table>
+                </div>
             </div>
 
-            <div class="panel-body">
-                <p>Daily time spent on pomodoro: {{data.weekly.daily}}</p>
-            </div>
 
-            <div class="breakdown">
-                <table class="table">
-                    <tr>
-                        <th>Task</th>
-                        <th>Sessions</th>
-                        <th>Cycles</th>
-                        <th>Cycles per session</th>
-                        <th>Avg session duration</th>
-                        <th>Total Duration</th>
-                    </tr>
-                    {% for task in data.weekly_tasks %}
+            <div id="monthly" class="panel panel-info">
+                <div class="panel-heading">
+                    <h3>Pomodoro Monthly</h3>
+                </div>
+                <div class="panel-body">
+                    <p>Daily time spent on pomodoro: {{data.monthly.daily}}</p>
+                </div>
+
+                <div class="breakdown">
+                    <table class="table">
+                        <tr>
+                            <th>Task</th>
+                            <th>Sessions</th>
+                            <th>Cycles</th>
+                            <th>Cycles per session</th>
+                            <th>Avg session duration</th>
+                            <th>Total Duration</th>
+                        </tr>
+                    {% for task in data.monthly_tasks %}
                     <tr>
                         <th>{{task.name}}</th>
                         <th>{{task.sessions}}</th>
@@ -41,63 +85,78 @@
                         <th>{{task.durationString}}</th>
                     </tr>
                     {% else %}
-                        <th colspan="6">No tasks with session data.</th>
+                     <th colspan="6">No tasks with session data.</th>
                     {% endfor %}
                     <tr>
                         <th>Total</th>
-                        <th>{{ data.weekly.count }}</th>
-                        <th>{{ data.weekly.totalcycles }}</th>
-                        <th>{{ data.weekly.cyclesprsession }}</th>
-                        <th>{{ data.weekly.average }}</th>
-                        <th>{{ data.weekly.total }}</th>
-                    </tr>
-                </table>
+                        <th>{{ data.monthly.count }}</th>
+                        <th>{{ data.monthly.totalcycles }}</th>
+                        <th>{{ data.monthly.cyclesprsession }}</th>
+                        <th>{{ data.monthly.average }}</th>
+                        <th>{{ data.monthly.total }}</th>
+                        </tr>
+                    </table>
+                </div>
             </div>
-        </div>
+        <button type="button" class="btn btn-info" onclick="toggle_visibility('weekly', 'monthly')">Toggle weekly/monthly</button>
+        <button type="button" class="btn btn-info" onclick="toggle_visibility('pomodoro', 'activity_tracker')">Toggle pomodoro/activity</button>
+    </div>
 
-
-        <div id="monthly" class="panel panel-info">
-        <div class="panel-heading">
-            <h3>Monthly</h3>
-        </div>
-            <div class="panel-body">
-                <p>Daily time spent on pomodoro: {{data.monthly.daily}}</p>
-            </div>
-
-            <div class="breakdown">
+        <div id="activity_tracker">
+            <div id="weekly_acti" class="panel panel-success">
+                <div class="panel-heading">
+                    <h3>Activities Weekly</h3>
+                </div>
                 <table class="table">
                     <tr>
-                        <th>Task</th>
-                        <th>Sessions</th>
-                        <th>Cycles</th>
-                        <th>Cycles per session</th>
-                        <th>Avg session duration</th>
-                        <th>Total Duration</th>
+                        <th>Activity</th>
+                        <th>Count</th>
+                        <th>Duration</th>
+                        <th>Average session duration</th>
                     </tr>
-                {% for task in data.monthly_tasks %}
-                <tr>
-                    <th>{{task.name}}</th>
-                    <th>{{task.sessions}}</th>
-                    <th>{{task.cycles}}</th>
-                    <th>{{task.cyclesprses}}</th>
-                    <th>{{task.avgduration}}</th>
-                    <th>{{task.durationString}}</th>
-                </tr>
-                {% else %}
-                 <th colspan="6">No tasks with session data.</th>
-                {% endfor %}
-                <tr>
-                    <th>Total</th>
-                    <th>{{ data.monthly.count }}</th>
-                    <th>{{ data.monthly.totalcycles }}</th>
-                    <th>{{ data.monthly.cyclesprsession }}</th>
-                    <th>{{ data.monthly.average }}</th>
-                    <th>{{ data.monthly.total }}</th>
+                    {% for activity in data.weekly_activities.breakdown %}
+                    <tr>
+                        <th>{{ activity.name }}</th>
+                        <th>{{ activity.count }}</th>
+                        <th>{{ activity.duration }}</th>
+                        <th>{{ activity.avgdurationString }}</th>
                     </tr>
+                    {% else %}
+                    <tr>
+                        <th colspan="4">No activities with data.</th>
+                    </tr>
+                    {% endfor %}
                 </table>
             </div>
+
+            <div id="monthly_acti" class="panel panel-warning">
+                <div class="panel-heading">
+                    <h3>Activities Monthly</h3>
+                </div>
+                <table class="table">
+                    <tr>
+                        <th>Activity</th>
+                        <th>Count</th>
+                        <th>Duration</th>
+                        <th>Average session duration</th>
+                    </tr>
+                    {% for activity in data.monthly_activities.breakdown %}
+                    <tr>
+                        <th>{{ activity.name }}</th>
+                        <th>{{ activity.count }}</th>
+                        <th>{{ activity.duration }}</th>
+                        <th>{{ activity.avgdurationString }}</th>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <th colspan="4">No activities with data.</th>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        <button type="button" class="btn btn-info" onclick="toggle_visibility('weekly_acti', 'monthly_acti')">Toggle weekly/monthly</button>
+        <button type="button" class="btn btn-info" onclick="toggle_visibility('pomodoro', 'activity_tracker')">Toggle pomodoro/activity</button>
         </div>
-    <button type="button" class="btn btn-info" onclick="toggle_visibility('weekly', 'monthly')">Toggle weekly/monthly</button>
 
         <div class="padding"></div>
         <H1>Calendar</H1>
