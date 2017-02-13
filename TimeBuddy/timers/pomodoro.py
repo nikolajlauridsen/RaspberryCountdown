@@ -167,7 +167,7 @@ class PomodoroTimer(CountDown):
             spaces = 16 - (len(message) + len(cursor_string))
             if spaces < 0:  # We can't have negative spaces
                 spaces = 0
-            top_string = '{} {}/{}'.format(message, ' '*spaces, cursor_string)
+            top_string = '{}{}{}'.format(message, ' '*spaces, cursor_string)
             self.screen.lcd_display_string(top_string, 1)
             self.screen.lcd_display_string(tasks[cursor]["name"].center(16, ' '), 2)
 
