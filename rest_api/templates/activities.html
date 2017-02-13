@@ -1,0 +1,83 @@
+<html>
+{% extends "base.html" %}
+{% block title %}Activities control pane{% endblock %}
+
+{% block code %}
+<script type="text/javascript" src="{{ url_for('static', filename='toggle.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="col-md-2"></div>
+<div class="col-md-8">
+
+    <div class="panel panel-success" id="active-table">
+        <div class="panel-heading">
+            <h2>Active activities</h2>
+        </div>
+        <table class="table">
+            <tr>
+                <th>activity name</th>
+                <th>Date added</th>
+                <th>Deactivate activity</th>
+            </tr>
+            {% for activity in data.active_tasks %}
+            <tr>
+                <th>{{activity.name}}</th>
+                <th>{{activity.date}}</th>
+                <th id="del-button">
+                    <form action="/api/activities/toggle" method="post" >
+                        <input type="hidden" name="name" value="{{activity.name}}">
+                        <input type="hidden" name="status" value="0">
+                        <input type="Submit" value="Deactivate">
+                    </form>
+                </th>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="panel panel-danger" id="inactive">
+        <div class="panel-heading">
+            <h2>Inactive activities</h2>
+        </div>
+        <table class="table">
+            <tr>
+                <th>Activity name</th>
+                <th>Date added</th>
+                <th>Reactivate activity</th>
+                <th>Delete activity</th>
+            </tr>
+            {% for activity in data.inactive_tasks %}
+            <tr>
+                <th>{{activity.name}}</th>
+                <th>{{activity.date}}</th>
+                <th class="activate-button">
+                    <form action="/api/activities/toggle" method="post" >
+                        <input type="hidden" name="name" value="{{activity.name}}">
+                        <input type="hidden" name="status" value="1">
+                        <input type="Submit" value="Activate">
+                    </form>
+                </th>
+                <th class="delete-button">
+                    <form action="/api/activities/delete" method="post"
+                    onsubmit="return confirm('Do you want to delete activity and ALL associated activity data?');">
+                        <input type="hidden" name="name" value="{{ activity.name }}">
+                        <input type="Submit" value="Delete">
+                    </form>
+                </th>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <button type="button" class="btn btn-info" onclick="toggle_visibility('active-table', 'inactive')">Toggle active/inactive tasks</button>
+
+    <h1>New activity</h1>
+    <form action="/api/activities/" method="post">
+        Activity name (Max 16 characters): <input type="text" name="name" value="name" maxlength="16">
+        <input type="submit" value="submit">
+    </form>
+</div>
+<div class="col-md-2"></div>
+{% endblock %}
+</html>

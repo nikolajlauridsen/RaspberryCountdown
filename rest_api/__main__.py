@@ -218,6 +218,65 @@ def delete_task():
         return """Task still active, please deactivate it first"""
 
 
+@TimeBuddy.route('/api/activities/', methods=['GET', 'POST'])
+def activities_api():
+    """Endpoint for creating activities, basically the same as tasks"""
+    if request.method == 'GET':
+        if request.form['active'] == "1":
+            activities_data = query_db("SELECT * FROM activities WHERE active > 0")
+        elif request.form['active'] == "0":
+            activities_data = query_db("SELECT * FROM activities WHERE active < 1")
+        else:
+            activities_data = query_db("SELECT * FROM activities")
+        return jsonify(results=activities_data)
+
+    elif request.method == 'POST':
+        query_db("INSERT INTO activities VALUE (?, ?, 1)",
+                 [int(time.time()), request.form['name']], commit=True)
+        return redirect(url_for(endpoint='activities'))
+
+
+@TimeBuddy.route('/api/activities/toggle', methods=['POST'])
+def toggle_activity():
+    query_db("UPDATE activities SET active=(?) WHERE name=(?)",
+             [request.form['status'], request.form['name']], commit=True)
+    return redirect(url_for(endpoint='activities'))
+
+
+@TimeBuddy.route('/api/activities/delete', methods=['POST'])
+def delete_activity():
+    """Deletes a activity and all sessions associated with it"""
+    # Only delete a activity if it's inactive
+    activity = query_db("SELECT active FROM tasks WHERE name=(?)",
+                    [request.form['name']], one=True)
+    if activity['active'] == 0:
+        # First delete all the session data belonging to the activity
+        query_db("DELETE FROM timetrack WHERE activity=(?)",
+                 [request.form['name']], commit=True),
+        # Then delete the activity itself
+        query_db("DELETE FROM activities WHERE name=(?)",
+                 [request.form['name']], commit=True)
+        # Redirect the user back
+        return redirect(url_for(endpoint='activities'))
+    else:
+        return """Activity still active, please deactivate it first"""
+
+
+@TimeBuddy.route('/api/timetrack/', methods=['GET', 'POST'])
+def timetrack():
+    if request.method == 'GET':
+        activity_data = query_db('SELECT * FROM timetrack')
+        return jsonify(results=activity_data)
+
+    elif request.method == 'POST':
+        query_db('INSERT INTO timetrack VALUES (?, ? ,? ,? )',
+                 [request.form['start'],
+                  request.form['end'],
+                  request.form['duration'],
+                  request.form['activity']], commit=True)
+        return """Activitytrack saved"""
+
+
 @TimeBuddy.route('/api/sessions/week/', methods=['GET'])
 def sessions_week():
     """Weekly endpoint for receiving sessions data from the past 7 days"""
@@ -340,6 +399,27 @@ def tasks():
                'tagline': 'Control panel'}
 
     return render_template('tasks.html', data=context)
+
+
+@TimeBuddy.route('/activities/', methods=['GET'])
+def activities():
+    active_activities = query_db('SELECT * FROM activities WHERE active > 0')
+    inactive_activities = query_db('SELECT * FROM activities WHERE active < 1')
+
+    for activity in active_activities:
+        activity["date"] = datetime.utcfromtimestamp(int(activity["date"])).strftime(
+            '%d-%m-%Y')
+
+    for activity in inactive_activities:
+        activity["date"] = datetime.utcfromtimestamp(int(activity["date"])).strftime(
+            '%d-%m-%Y')
+
+    context = {'active_tasks': active_activities,
+               'inactive_tasks': inactive_activities,
+               'title': 'TimeTracker',
+               'tagline': 'Activity control panel'}
+
+    return render_template('activities.html', data=context)
 
 if __name__ == '__main__':
     TimeBuddy.run(host=settings.host,

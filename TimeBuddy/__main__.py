@@ -2,10 +2,11 @@ import time
 
 import RPi.GPIO as GPIO
 
-from timers.pomodoro import PomodoroTimer
-from timers.stopwatch import StopWatch
-from physical.notifier import Notifier
-from physical import LCD_driver as lcdDriver
+from TimeBuddy.timers.pomodoro import PomodoroTimer
+from TimeBuddy.timers.stopwatch import StopWatch
+from TimeBuddy.timers.activitytracker import ActivityTracker
+from TimeBuddy.physical.notifier import Notifier
+from TimeBuddy.physical import LCD_driver as lcdDriver
 
 # Buttons dictionary
 buttons = {
@@ -43,8 +44,9 @@ if __name__ == "__main__":
     notifier = Notifier(output)
     pomodoro = PomodoroTimer(screen, notifier, buttons, debug=False)
     stopwatch = StopWatch(screen, notifier, buttons)
+    activityTracker = ActivityTracker(screen, notifier, buttons)
 
-    options = [pomodoro, stopwatch]
+    options = [pomodoro, stopwatch, activityTracker]
 
     cursor = 0
     while True:
