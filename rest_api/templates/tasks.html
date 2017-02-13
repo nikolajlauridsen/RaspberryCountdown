@@ -45,6 +45,7 @@
                 <th>Task name</th>
                 <th>Date added</th>
                 <th>Reactivate task</th>
+                <th>Delete task</th>
             </tr>
             {% for task in data.inactive_tasks %}
             <tr>
@@ -55,6 +56,13 @@
                         <input type="hidden" name="name" value="{{task.name}}">
                         <input type="hidden" name="status" value="1">
                         <input type="Submit" value="Activate">
+                    </form>
+                </th>
+                <th class="delete-button">
+                    <form action="/api/tasks/delete" method="post"
+                    onsubmit="return confirm('Do you want to delete task and ALL associated session data?');">
+                        <input type="hidden" name="name" value="{{ task.name }}">
+                        <input type="Submit" value="Delete">
                     </form>
                 </th>
             </tr>

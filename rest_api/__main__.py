@@ -51,9 +51,9 @@ def close_connection(exception):
         db.close()
 
 
-def query_db(query, args=(), one=False, put=False):
-    """Query the database, if put is False the function will fetch data
-    if put is true it'll insert data"""
+def query_db(query, args=(), one=False, commit=False):
+    """Query the database, if commit is False the function will fetch data
+    if commit is true it'll insert data"""
     db = get_db()
 
     try:
@@ -62,7 +62,7 @@ def query_db(query, args=(), one=False, put=False):
         init_db()
         cur = db.execute(query, args)
 
-    if put:
+    if commit:
         db.commit()
         cur.close()
         return None
@@ -158,7 +158,7 @@ def sessions():
                   request.form['end'],
                   request.form['duration'],
                   request.form['cycles'],
-                  request.form['task']], put=True)
+                  request.form['task']], commit=True)
         return """Session saved"""
 
 
@@ -177,15 +177,31 @@ def tasks_api():
     elif request.method == 'POST':
         # All tasks starts off as active
         query_db('INSERT INTO tasks VALUES (?, ?, 1)',
-                 [int(time.time()), request.form['name']], put=True)
+                 [int(time.time()), request.form['name']], commit=True)
         return redirect(url_for(endpoint='tasks'))
 
 
 @TimeBuddy.route('/api/tasks/toggle', methods=['POST'])
 def toggle_task():
     query_db("UPDATE tasks SET active=(?) WHERE name=(?)",
-             [request.form['status'], request.form['name']], put=True)
+             [request.form['status'], request.form['name']], commit=True)
     return redirect(url_for(endpoint='tasks'))
+
+
+@TimeBuddy.route('/api/tasks/delete', methods=['POST'])
+def delete_task():
+    """Deletes a task and all sessions associated with it"""
+    # Only delete a task if it's inactive
+    task = query_db("SELECT active FROM tasks WHERE name=(?)",
+                    [request.form['name']], one=True)
+    if task['active'] == 0:
+        query_db("DELETE FROM pomodoro WHERE task=(?)",
+                 [request.form['name']], commit=True),
+        query_db("DELETE FROM tasks WHERE name=(?)",
+                 [request.form['name']], commit=True)
+        return redirect(url_for(endpoint='tasks'))
+    else:
+        return """Task still active, please deactivate it first"""
 
 
 @TimeBuddy.route('/api/sessions/week/', methods=['GET'])
