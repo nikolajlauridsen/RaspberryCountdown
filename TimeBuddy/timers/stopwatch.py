@@ -33,7 +33,7 @@ class StopWatch:
         if self.running:
             print("clock paused")
             self.screen.lcd_display_string("Paused".center(16), 1)
-            self.pause_data.append(self.get_elapsed())
+            self.pause_data.append(time.time() - self.start_time)
             self.running = False
         else:
             self.start(msg=msg)
