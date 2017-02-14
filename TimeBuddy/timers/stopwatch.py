@@ -17,29 +17,39 @@ class StopWatch:
         return "StopWatch"
 
     def start(self, msg="Running"):
+        """Start the timer"""
         print("clock started")
         self.screen.lcd_display_string(msg.center(16), 1)
         self.start_time = time.time()
         self.running = True
 
+    def pause(self):
+        """Pause the timer"""
+        print("clock paused")
+        self.screen.lcd_display_string("Paused".center(16), 1)
+        self.pause_data.append(time.time() - self.start_time)
+        self.running = False
+        self.start_time = None
+
     def reset(self):
+        """Reset the timer"""
         self.screen.lcd_display_string("Stopped".center(16), 1)
         self.screen.lcd_display_string(" "*16, 2)
         self.elapsed = 0
         self.pause_data = []
         self.running = False
+        self.start_time = None
 
     def toggle_pause(self, msg="Running"):
+        """Toggle pause, if the timer is running it will be paused
+        if it's paused if will be started"""
         if self.running:
-            print("clock paused")
-            self.screen.lcd_display_string("Paused".center(16), 1)
-            self.pause_data.append(time.time() - self.start_time)
-            self.running = False
-            self.start_time = None
+            self.pause()
         else:
             self.start(msg=msg)
 
     def get_elapsed(self):
+        """Get elapsed time as a float"""
         if self.running:
             elapsed = time.time() - self.start_time
         else:
@@ -50,6 +60,7 @@ class StopWatch:
         return elapsed
 
     def get_elapsed_string(self):
+        """Get elapsed time as a formatted string"""
         elapsed = self.get_elapsed()
 
         if 60 < elapsed < 3600:
@@ -68,6 +79,8 @@ class StopWatch:
             return "{:02}".format(int(elapsed))
 
     def main(self):
+        """Main program for running the timer by it self with the screen and
+        buttons"""
         if self.running:
             self.screen.lcd_display_string("Running".center(16), 1)
         else:
