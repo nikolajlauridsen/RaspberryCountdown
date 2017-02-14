@@ -297,8 +297,8 @@ def toggle_activity():
 def delete_activity():
     """Deletes a activity and all sessions associated with it"""
     # Only delete a activity if it's inactive
-    activity = query_db("SELECT active FROM tasks WHERE name=(?)",
-                    [request.form['name']], one=True)
+    activity = query_db("SELECT active FROM activities WHERE name=(?)",
+                        [request.form['name']], one=True)
     if activity['active'] == 0:
         # First delete all the session data belonging to the activity
         query_db("DELETE FROM timetrack WHERE activity=(?)",
