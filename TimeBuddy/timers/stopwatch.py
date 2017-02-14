@@ -35,6 +35,7 @@ class StopWatch:
             self.screen.lcd_display_string("Paused".center(16), 1)
             self.pause_data.append(time.time() - self.start_time)
             self.running = False
+            self.start_time = None
         else:
             self.start(msg=msg)
 
