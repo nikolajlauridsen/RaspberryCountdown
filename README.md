@@ -1,7 +1,5 @@
 # TimeBuddy
 
-#### Productivity Tool
-
 (Insert product image here)
 
 ## TimeBuddy consists of 2 parts
@@ -26,6 +24,7 @@ core idea in TimeBuddy.
 ### Core Idea
 
 The idea of TimeBuddy is really two things:
+
 1. A Pomodoro timer
 2. An activity tracker
 
@@ -45,6 +44,7 @@ The Pomodoro Technique is a time management method developed by Francesco Cirill
 
 ##### TL;DR
 The Pomodoro Technique is:
+
 1. Select a task
 1. Start a 25 minute timer
 2. Work on said task
