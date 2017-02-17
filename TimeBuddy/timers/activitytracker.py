@@ -60,7 +60,7 @@ class ActivityTracker(StopWatch):
 
                 if self.start_time:
                     # If the timer has been started, just toggle pause
-                    self.toggle_pause(msg=activity['name'])
+                    self.toggle_pause(msg=activity['name'], leds=True)
                 else:
                     # If it hasn't, set the tracking session start time
                     self.tracker_start = time.time()

@@ -40,13 +40,19 @@ class StopWatch:
         self.running = False
         self.start_time = None
 
-    def toggle_pause(self, msg="Running"):
+    def toggle_pause(self, msg="Running", leds=False):
         """Toggle pause, if the timer is running it will be paused
         if it's paused if will be started"""
         if self.running:
             self.pause()
+            if leds:
+                self.notifier.toggle_led(self.notifier.led_green, False)
+                self.notifier.toggle_led(self.notifier.led_red, True)
         else:
             self.start(msg=msg)
+            if leds:
+                self.notifier.toggle_led(self.notifier.led_green, True)
+                self.notifier.toggle_led(self.notifier.led_red, False)
 
     def get_elapsed(self):
         """Get elapsed time as a float"""
