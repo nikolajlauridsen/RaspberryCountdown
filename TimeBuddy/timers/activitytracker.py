@@ -19,6 +19,7 @@ class ActivityTracker(StopWatch):
     def finish_tracker(self, activity):
         """Finish a tracker session, saving it to the api database and
         creating a google calendar event, reset the stopwatch as well"""
+        self.notifier.clear_leds()
         end = time.time()
         duration = self.get_elapsed()
         self.screen.lcd_display_string('Saving event'.center(16, ' '), 2)
@@ -65,6 +66,7 @@ class ActivityTracker(StopWatch):
                     # If it hasn't, set the tracking session start time
                     self.tracker_start = time.time()
                     # And then start the clock
+                    self.notifier.toggle_led(self.notifier.led_green, True)
                     self.start(msg=activity['name'])
 
             elif GPIO.event_detected(self.buttons['stop']):
