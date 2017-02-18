@@ -3,15 +3,15 @@
 (Insert product image here)
 
 ## Project Background
-TimeBuddy is built as a part of a school project, the given subject is
-"On the Edge of Time", the general theme is that time is a shrinking commodity
-and our task is to create a product that can somehow alleviate that.
+TimeBuddy is built as a part of a school project, the given subject is 
+"On the Edge of Time", the general theme is that time is a shrinking commodity 
+and our task is to create a product that can somehow alleviate that. 
 
-Considering how it's impossible to increase the amount of time available we
-quickly agreed that a product that helps one increase productivity was the way
+Considering how it's impossible to increase the amount of time available we 
+quickly agreed that a product that helps one increase productivity was the way 
 to go an we then started to develop the idea behind TimeBuddy.
 
-Having recently read about the Pomodoro Technique we wanted this to be the
+Having recently read about the Pomodoro Technique we wanted this to be the 
 core idea in TimeBuddy.
 
 ## Core Idea
@@ -22,13 +22,13 @@ The idea of TimeBuddy is really two things:
 2. An activity tracker
 
 Each idea will be further described in greater detail by its own.
-
-But since this project basically needs to do two things it's build as a basis
-platform with hardware wise a 16x2 LCD screen, two LEDs and a buzzer for output and
-four buttons (start, stop, back, forward) for input.
-Software wise TimeBuddy is just a simple program which initializes the
-input and output, then creates the different program objects with said
-input/output and then runs the program objects main method, but this is
+ 
+But since this project basically needs to do two things it's build as a basis 
+platform with hardware wise a 16x2 LCD screen, two LEDs and a buzzer for output and 
+four buttons (start, stop, back, forward) for input. 
+Software wise TimeBuddy is just a simple program which initializes the 
+input and output, then creates the different program objects with said 
+input/output and then runs the program objects main method, but this is 
 explained in greater detail in the TimeBuddy README file.
 
 ### Pomodoro Timer
@@ -54,65 +54,59 @@ The Pomodoro Technique is:
 ##### How it helps
 This technique helps your productivity since it:
 * Forces you to actively decide what task to accomplish
-* Gives you small breaks for reflection
+* Gives you small breaks for reflection 
 * Gives you longer breaks, this feels both feels like a reward, but also keeps you
 from burning out
 
 ###Activity Tracker
-Activity tracker might seem like something out of some creepy sci-fi show
-but sometimes it's nice to know how much time you spent on certain activities,
-especially if you're trying to optimize your time.
+Activity tracker might seem like something out of some creepy sci-fi show 
+but sometimes it's nice to know how much time you spent on certain activities, 
+especially if you're trying to optimize your time. 
 
-And Activity Tracker does just that, when starting an Activity Tracker session
-you will be asked to choose an activity from your list of activities, once the
-timer is stopped the time spent on the activity will be logged in a database
+And activity tracker does just that, when starting an Activity Tracker session 
+you will be asked to choose an activity from your list of activities, once the 
+timer is stopped the time spent on the activity will be logged in a database 
 on the restful API.
 
-The web UI is then used to display a summary of your activities and time
-spent on each one of them, the web UI is also used to manage your activities
+The web UI is then used to display a summary of your activities and time 
+spent on each one of them, the web UI is also used to manage your activities 
 and pomodoro tasks.
 
-Activity Tracker also bleeds into the Pomodoro timer, and every pomodoro
+Activity Tracker also bleeds into the Pomodoro timer, and every pomodoro 
 session is logged as well and displayed on the web UI.
 
 
 ## How it works
 
 ### TimeBuddy consists of 2 parts
-1. A flask project hosting a web UI and restful API
-2. The TimeBuddy program.
+1. A flask project hosting a web UI and restful API 
+2. The TimeBuddy program. 
 
-For specific documentation on either of these parts see the README in their
+For specific documentation on either of these parts see the README in their 
 respective folders (Coming soon!)
 
 ### Broad strokes
-The TimeBuddy platform can best be explained with the following wannabe UML
+The TimeBuddy platform can best be explained with the following wannabe UML 
 diagram
 
 ![TimeBuddy overview](https://raw.githubusercontent.com/nikolajlauridsen/RaspberryTimebuddy/master/Documentation/Images/UML.png)
-Please note that arrows above the line signal information flow, and arrows
-above the line signal how the classes are imported.
+Please note that arrows above the line signal information flow, and arrows 
+above the line signal how the classes are imported
 
-Starting from above the user interacts with TimeBuddy through both the Web UI
-generated by the Restful API, implementing a google calender, and through the
+Starting from above the user interacts with TimeBuddy through both the Web UI 
+generated by the Restful API, implementing a google calender, and through the 
  physical screen, buttons and notifying tools (LEDs and buzzer).
-
-TimeBuddy only communicate with the restful API and google calendar through
-the TimeBuddy program classes, which in turn communicate with the necessary
-APIs through abstracted helper classes called EventCreator and ApiHandler.
-This means that TimeBuddy is just the launcher program which uses the physical
-inputs to let a user choose and run a program class, which in turns makes it
-really easy to expand TimeBuddy, simple write a new program object and add it
-to the list in the \_\_main\_\_.py file in [the TimeBuddy folder](https://github.com/nikolajlauridsen/RaspberryTimebuddy/tree/master/TimeBuddy),
+ 
+TimeBuddy only communicate with the restful API and google calendar through 
+the TimeBuddy program classes, which in turn communicate with the necessary 
+APIs through abstracted helper classes called EventCreator and ApiHandler. 
+This means that TimeBuddy is just the launcher program which uses the physical 
+inputs to let a user choose and run a program class, which in turns makes it 
+really easy to expand TimeBuddy, simple write a new program object and add it 
+to the list in the \_\_main\_\_.py file in [the TimeBuddy folder](https://github.com/nikolajlauridsen/RaspberryTimebuddy/tree/master/TimeBuddy), 
 and then of course update the restful api as nececary.
 
-## Putting it all together
 
-### Building the TimeBuddy
-![TimeBuddy breadboard view](https://github.com/nikolajlauridsen/RaspberryTimebuddy/blob/master/Documentation/Schematics/TimeBuddy_breadboard.png?raw=true)
-#### Pinout
-
-### Setting up the Raspberry Pi
 
 
 # Dependencies
