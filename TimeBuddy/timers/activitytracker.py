@@ -59,7 +59,7 @@ class ActivityTracker(StopWatch):
 
             if GPIO.event_detected(self.buttons['start']):
 
-                if self.start_time:
+                if self.tracker_start:
                     # If the timer has been started, just toggle pause
                     self.toggle_pause(msg=activity['name'], leds=True)
                 else:
