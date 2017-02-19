@@ -19,18 +19,19 @@ class ActivityTracker(StopWatch):
     def finish_tracker(self, activity):
         """Finish a tracker session, saving it to the api database and
         creating a google calendar event, reset the stopwatch as well"""
+        if self.tracker_start:
+            end = time.time()
+            duration = self.get_elapsed()
+            self.screen.lcd_display_string('Saving event'.center(16, ' '), 2)
+            self.api_handler.save_tracker(self.tracker_start, end,
+                                          duration, activity)
+            summary = "Activity tracker session"
+            description = "Activity: {}\nDuration: {}".format(activity, self.get_elapsed_string())
+            self.screen.lcd_display_string('calendar event'.center(16, ' '), 2)
+            self.calendar.create_event(summary,
+                                       self.tracker_start, end,
+                                       description=description)
         self.notifier.clear_leds()
-        end = time.time()
-        duration = self.get_elapsed()
-        self.screen.lcd_display_string('Saving event'.center(16, ' '), 2)
-        self.api_handler.save_tracker(self.tracker_start, end,
-                                      duration, activity)
-        summary = "Activity tracker session"
-        description = "Activity: {}\nDuration: {}".format(activity, self.get_elapsed_string())
-        self.screen.lcd_display_string('calendar event'.center(16, ' '), 2)
-        self.calendar.create_event(summary,
-                                   self.tracker_start, end,
-                                   description=description)
         self.reset()
 
     def reset(self):
