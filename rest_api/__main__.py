@@ -82,6 +82,13 @@ def query_db(query, args=(), one=False, commit=False):
         return (rv[0] if rv else None) if one else rv
 
 
+def get_last_day():
+    query = "SELECT * FROM pomodoro" \
+            " WHERE DATETIME(startTime, 'unixepoch') >= DATE('now', '-1 days')"
+    daily_sessions = query_db(query)
+    return daily_sessions
+
+
 def get_last_week():
     """Returns session data from the past 7 days"""
     query = "SELECT * FROM pomodoro" \
@@ -397,7 +404,7 @@ def index():
 
     try:
         w_avg_daily = w_duration_sum / 7
-        duration_average_week = w_duration_sum/len(weekly_data)
+        duration_average_week = w_duration_sum/weekly_sessions
         avg_weekly_cycles = round(weekly_cycles / weekly_sessions, 2)
     except ZeroDivisionError:
         w_avg_daily = 0
@@ -412,26 +419,63 @@ def index():
               'cyclesprsession': avg_weekly_cycles
               }
 
+    # Pack daily data
+    daily_data = get_last_day()
+    daily_tasks = get_task_breakdown(daily_data)
+
+    d_duration_sum = get_duration_sum(daily_data)
+
+    daily_cycles = 0
+    for task in daily_tasks:
+        daily_cycles += 1
+    daily_sessions = len(daily_data)
+
+    try:
+        duration_avg_day = d_duration_sum/daily_sessions
+        avg_cycles_day = round(daily_cycles / daily_sessions, 2)
+    except ZeroDivisionError:
+        duration_avg_day = 0
+        avg_cycles_day = 0
+
+    # Create daily dictionary
+    daily = {'count': daily_sessions,
+             'average': seconds_to_timestamp(duration_avg_day),
+             'total': seconds_to_timestamp(d_duration_sum),
+             'totalcycles': daily_cycles,
+             'cyclesprsession': avg_cycles_day
+             }
+
     # Generate the calendar ID based upon the link in calendar_id.txt
     calendar_id = "https://calendar.google.com/calendar/embed?src=" + \
                   get_calendar_id() + "&ctz=Europe/Copenhagen"
+
 
     query = "SELECT * FROM timetrack" \
             " WHERE datetime(startTime, 'unixepoch') >= DATE('now', '-30 days')"
     monthly_activities = query_db(query)
     monthly_activities = get_activity_breakdown(monthly_activities, span=30)
+
     query = "SELECT * FROM timetrack" \
             " WHERE datetime(startTime, 'unixepoch') >= DATE('now', '-7 days')"
     weekly_activities = query_db(query)
     weekly_activities = get_activity_breakdown(weekly_activities, span=7)
+
+    query = "SELECT * from timetrack" \
+            " WHERE DATETIME(startTime, 'unixepoch') >= DATE('now', '-1 days')"
+    daily_activities = query_db(query)
+    daily_activities = get_activity_breakdown(daily_activities, span=1)
+
     # Put the data into context
     context = {
+        'daily': daily,
         'weekly': weekly,
         'monthly': monthly,
+        'daily_tasks': daily_tasks,
         'weekly_tasks': weekly_tasks,
         'monthly_tasks': monthly_tasks,
         'monthly_activities': monthly_activities,
         'weekly_activities': weekly_activities,
+        'daily_activities': daily_activities,
         'calendar_id': calendar_id,
         'title': 'TimeBuddy',
         'tagline': 'Statistics'

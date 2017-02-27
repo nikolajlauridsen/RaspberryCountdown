@@ -13,6 +13,42 @@
         <div class="padding"></div>
 
         <div id="pomodoro">
+            <div id="daily" class="panel panel-primary hidden">
+                <div class="panel-heading">
+                    <h3>Pomodoro Daily</h3>
+                </div>
+
+                <table class="table">
+                    <tr>
+                        <th>Task</th>
+                        <th>Sessions</th>
+                        <th>Cycles</th>
+                        <th>Cycles per session</th>
+                        <th>Total Duration</th>
+                    </tr>
+                    {% for task in data.daily_tasks %}
+                    <tr>
+                        <th>{{ task.name }}</th>
+                        <th>{{ task.sessions }}</th>
+                        <th>{{ task.cyclesprses }}</th>
+                        <th>{{ task.avgduration }}</th>
+                        <th>{{ task.durationString }}</th>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <th colspan="4">No sessions to show</th>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <th>Total</th>
+                        <th>{{ data.daily.count }}</th>
+                        <th>{{ data.daily.totalcycles }}</th>
+                        <th>{{ data.daily.cyclesprsession }}</th>
+                        <th>{{ data.daily.total }}</th>
+                    </tr>
+                </table>
+            </div>
+
             <div id="weekly" class="panel panel-primary show">
                 <div class="panel-heading">
                     <h3>Pomodoro Weekly</h3>
@@ -107,15 +143,19 @@
         </nav>
         <script lang="text/javascript">
             $('#p_daily').click(function () {
-                // Todo: add daily
+                $('#daily').removeClass('hidden').addClass('show');
+                $('#weekly').removeClass('show').addClass('hidden');
+                $('#monthly').removeClass('show').addClass('hidden');
             });
             $('#p_weekly').click(function () {
                 $('#weekly').removeClass('hidden').addClass('show');
                 $('#monthly').removeClass('show').addClass('hidden');
+                $('#daily').removeClass('show').addClass('hidden');
             });
             $('#p_monthly').click(function () {
                 $('#monthly').removeClass('hidden').addClass('show');
                 $('#weekly').removeClass('show').addClass('hidden');
+                $('#daily').removeClass('show').addClass('hidden');
             });
         </script>
         <button type="button" class="btn btn-info" onclick="toggle_visibility('pomodoro', 'activity_tracker')">Toggle pomodoro/activity</button>
