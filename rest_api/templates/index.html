@@ -24,19 +24,21 @@
                         <th>Sessions</th>
                         <th>Cycles</th>
                         <th>Cycles per session</th>
+                        <th>Avg session duration</th>
                         <th>Total Duration</th>
                     </tr>
                     {% for task in data.daily_tasks %}
                     <tr>
                         <th>{{ task.name }}</th>
                         <th>{{ task.sessions }}</th>
+                        <th>{{ task.cycles }}</th>
                         <th>{{ task.cyclesprses }}</th>
                         <th>{{ task.avgduration }}</th>
                         <th>{{ task.durationString }}</th>
                     </tr>
                     {% else %}
                     <tr>
-                        <th colspan="4">No sessions to show</th>
+                        <th colspan="6">No sessions to show</th>
                     </tr>
                     {% endfor %}
                     <tr>
