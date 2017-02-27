@@ -185,7 +185,27 @@
                     </tr>
                 </table>
             </div>
-        <button type="button" class="btn btn-info" onclick="toggle_visibility('weekly_acti', 'monthly_acti')">Toggle weekly/monthly</button>
+
+         <nav aria-label="...">
+            <ul class="pager">
+                <li id="a_daily"><a href="#">Daily</a> </li>
+                <li id="a_weekly"><a href="#">Weekly</a> </li>
+                <li id="a_monthly"><a href="#">Monthly</a> </li>
+            </ul>
+        </nav>
+        <script lang="text/javascript">
+            $('#a_daily').click(function () {
+                // Todo: add daily
+            });
+            $('#a_weekly').click(function () {
+                $('#weekly_acti').removeClass('hidden').addClass('show');
+                $('#monthly_acti').removeClass('show').addClass('hidden');
+            });
+            $('#a_monthly').click(function () {
+                $('#monthly_acti').removeClass('hidden').addClass('show');
+                $('#weekly_acti').removeClass('show').addClass('hidden');
+            });
+        </script>
         <button type="button" class="btn btn-info" onclick="toggle_visibility('pomodoro', 'activity_tracker')">Toggle pomodoro/activity</button>
         </div>
 
