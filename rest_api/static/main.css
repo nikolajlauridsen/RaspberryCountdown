@@ -30,9 +30,6 @@
     text-shadow: 1px 1px #d4ddd7;
 }
 
-#monthly{
-    display: none;
-}
 
 #inactive{
     display: none;
@@ -51,6 +48,19 @@
     width: 10px;
     display: inline;
     background-color: antiquewhite;
+}
+
+.hidden{
+    display: none !important;
+    visibility: hidden !important;
+}
+
+.show{
+    display: block !important;
+}
+
+.invisible{
+    visibility: hidden;
 }
 
 .statistics{

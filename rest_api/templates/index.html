@@ -13,7 +13,7 @@
         <div class="padding"></div>
 
         <div id="pomodoro">
-            <div id="weekly" class="panel panel-primary">
+            <div id="weekly" class="panel panel-primary show">
                 <div class="panel-heading">
                     <h3>Pomodoro Weekly</h3>
                 </div>
@@ -57,7 +57,7 @@
             </div>
 
 
-            <div id="monthly" class="panel panel-info">
+            <div id="monthly" class="panel panel-info hidden">
                 <div class="panel-heading">
                     <h3>Pomodoro Monthly</h3>
                 </div>
@@ -98,7 +98,26 @@
                     </table>
                 </div>
             </div>
-        <button type="button" class="btn btn-info" onclick="toggle_visibility('weekly', 'monthly')">Toggle weekly/monthly</button>
+        <nav aria-label="...">
+            <ul class="pager">
+                <li id="p_daily"><a href="#">Daily</a> </li>
+                <li id="p_weekly"><a href="#">Weekly</a> </li>
+                <li id="p_monthly"><a href="#">Monthly</a> </li>
+            </ul>
+        </nav>
+        <script lang="text/javascript">
+            $('#p_daily').click(function () {
+                // Todo: add daily
+            });
+            $('#p_weekly').click(function () {
+                $('#weekly').removeClass('hidden').addClass('show');
+                $('#monthly').removeClass('show').addClass('hidden');
+            });
+            $('#p_monthly').click(function () {
+                $('#monthly').removeClass('hidden').addClass('show');
+                $('#weekly').removeClass('show').addClass('hidden');
+            });
+        </script>
         <button type="button" class="btn btn-info" onclick="toggle_visibility('pomodoro', 'activity_tracker')">Toggle pomodoro/activity</button>
     </div>
 

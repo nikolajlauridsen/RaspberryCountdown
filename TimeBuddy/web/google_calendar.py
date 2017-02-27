@@ -2,6 +2,7 @@ import httplib2
 import datetime
 import argparse
 import os
+import socket
 
 from apiclient import discovery
 from oauth2client import client
@@ -84,4 +85,7 @@ class EventCreator:
                 'useDefault': False
             }
         }
-        self.service.events().insert(calendarId=get_calendar_id(), body=event).execute()
+        try:
+            self.service.events().insert(calendarId=get_calendar_id(), body=event).execute()
+        except socket.gaierror:
+            print("Network error")
