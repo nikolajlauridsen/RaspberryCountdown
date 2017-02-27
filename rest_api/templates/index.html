@@ -162,7 +162,39 @@
     </div>
 
         <div id="activity_tracker">
-            <div id="weekly_acti" class="panel panel-success">
+            <div id="daily_acti" class="panel panel-success hidden">
+                <div class="panel-heading">
+                    <h3>Activities Daily</h3>
+                </div>
+                <table class="table">
+                    <tr>
+                        <th>Activity</th>
+                        <th>Count</th>
+                        <th>Duration</th>
+                        <th>Average session duration</th>
+                    </tr>
+                    {% for activity in data.daily_activities.breakdown %}
+                    <tr>
+                        <th>{{ activity.name }}</th>
+                        <th>{{ activity.count }}</th>
+                        <th>{{ activity.durationString }}</th>
+                        <th>{{ activity.avgduration }}</th>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <th colspan="5">No activities with data.</th>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <th>Total</th>
+                        <th>{{ data.daily_activities.total_count }}</th>
+                        <th>{{ data.daily_activities.duration_sum }}</th>
+                        <th>{{ data.daily_activities.avg_duration }}</th>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="weekly_acti" class="panel panel-success show">
                 <div class="panel-heading">
                     <h3>Activities Weekly</h3>
                 </div>
@@ -182,7 +214,7 @@
                     </tr>
                     {% else %}
                     <tr>
-                        <th colspan="4">No activities with data.</th>
+                        <th colspan="5">No activities with data.</th>
                     </tr>
                     {% endfor %}
                     <tr>
@@ -194,7 +226,7 @@
                 </table>
             </div>
 
-            <div id="monthly_acti" class="panel panel-warning">
+            <div id="monthly_acti" class="panel panel-warning hidden">
                 <div class="panel-heading">
                     <h3>Activities Monthly</h3>
                 </div>
@@ -214,7 +246,7 @@
                     </tr>
                     {% else %}
                     <tr>
-                        <th colspan="4">No activities with data.</th>
+                        <th colspan="5">No activities with data.</th>
                     </tr>
                     {% endfor %}
                     <tr>
@@ -235,15 +267,19 @@
         </nav>
         <script lang="text/javascript">
             $('#a_daily').click(function () {
-                // Todo: add daily
+                $('#daily_acti').removeClass('hidden').addClass('show');
+                $('#weekly_acti').removeClass('show').addClass('hidden');
+                $('#monthly_acti').removeClass('show').addClass('hidden');
             });
             $('#a_weekly').click(function () {
                 $('#weekly_acti').removeClass('hidden').addClass('show');
                 $('#monthly_acti').removeClass('show').addClass('hidden');
+                $('#daily_acti').removeClass('show').addClass('hidden');
             });
             $('#a_monthly').click(function () {
                 $('#monthly_acti').removeClass('hidden').addClass('show');
                 $('#weekly_acti').removeClass('show').addClass('hidden');
+                $('#daily_acti').removeClass('show').addClass('hidden');
             });
         </script>
         <button type="button" class="btn btn-info" onclick="toggle_visibility('pomodoro', 'activity_tracker')">Toggle pomodoro/activity</button>
