@@ -58,7 +58,7 @@ This technique helps your productivity since it:
 * Gives you longer breaks, this feels both feels like a reward, but also keeps you
 from burning out
 
-###Activity Tracker
+### Activity Tracker
 Activity tracker might seem like something out of some creepy sci-fi show 
 but sometimes it's nice to know how much time you spent on certain activities, 
 especially if you're trying to optimize your time. 
@@ -105,8 +105,6 @@ inputs to let a user choose and run a program class, which in turns makes it
 really easy to expand TimeBuddy, simple write a new program object and add it 
 to the list in the \_\_main\_\_.py file in [the TimeBuddy folder](https://github.com/nikolajlauridsen/RaspberryTimebuddy/tree/master/TimeBuddy), 
 and then of course update the restful api as nececary.
-
-
 
 
 # Dependencies
