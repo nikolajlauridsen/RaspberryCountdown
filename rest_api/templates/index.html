@@ -13,6 +13,32 @@
         <div class="padding"></div>
 
         <div id="pomodoro">
+
+            <nav aria-label="...">
+                <ul class="pager">
+                    <li id="p_daily"><a href="#">Daily</a> </li>
+                    <li id="p_weekly"><a href="#">Weekly</a> </li>
+                    <li id="p_monthly"><a href="#">Monthly</a> </li>
+                </ul>
+            </nav>
+            <script lang="text/javascript">
+                $('#p_daily').click(function () {
+                    $('#daily').removeClass('hidden').addClass('show');
+                    $('#weekly').removeClass('show').addClass('hidden');
+                    $('#monthly').removeClass('show').addClass('hidden');
+                });
+                $('#p_weekly').click(function () {
+                    $('#weekly').removeClass('hidden').addClass('show');
+                    $('#monthly').removeClass('show').addClass('hidden');
+                    $('#daily').removeClass('show').addClass('hidden');
+                });
+                $('#p_monthly').click(function () {
+                    $('#monthly').removeClass('hidden').addClass('show');
+                    $('#weekly').removeClass('show').addClass('hidden');
+                    $('#daily').removeClass('show').addClass('hidden');
+                });
+            </script>
+
             <div id="daily" class="panel panel-primary hidden">
                 <div class="panel-heading">
                     <h3>Pomodoro Daily</h3>
@@ -94,7 +120,6 @@
                 </div>
             </div>
 
-
             <div id="monthly" class="panel panel-info hidden">
                 <div class="panel-heading">
                     <h3>Pomodoro Monthly</h3>
@@ -136,34 +161,38 @@
                     </table>
                 </div>
             </div>
-        <nav aria-label="...">
-            <ul class="pager">
-                <li id="p_daily"><a href="#">Daily</a> </li>
-                <li id="p_weekly"><a href="#">Weekly</a> </li>
-                <li id="p_monthly"><a href="#">Monthly</a> </li>
-            </ul>
-        </nav>
-        <script lang="text/javascript">
-            $('#p_daily').click(function () {
-                $('#daily').removeClass('hidden').addClass('show');
-                $('#weekly').removeClass('show').addClass('hidden');
-                $('#monthly').removeClass('show').addClass('hidden');
-            });
-            $('#p_weekly').click(function () {
-                $('#weekly').removeClass('hidden').addClass('show');
-                $('#monthly').removeClass('show').addClass('hidden');
-                $('#daily').removeClass('show').addClass('hidden');
-            });
-            $('#p_monthly').click(function () {
-                $('#monthly').removeClass('hidden').addClass('show');
-                $('#weekly').removeClass('show').addClass('hidden');
-                $('#daily').removeClass('show').addClass('hidden');
-            });
-        </script>
-        <button type="button" class="btn btn-info" onclick="toggle_visibility('pomodoro', 'activity_tracker')">Toggle pomodoro/activity</button>
+
+            <button type="button" class="btn btn-info" onclick="toggle_visibility('pomodoro', 'activity_tracker')">Toggle pomodoro/activity</button>
+
     </div>
 
         <div id="activity_tracker">
+
+             <nav aria-label="...">
+                <ul class="pager">
+                    <li id="a_daily"><a href="#">Daily</a> </li>
+                    <li id="a_weekly"><a href="#">Weekly</a> </li>
+                    <li id="a_monthly"><a href="#">Monthly</a> </li>
+                </ul>
+            </nav>
+            <script lang="text/javascript">
+                $('#a_daily').click(function () {
+                    $('#daily_acti').removeClass('hidden').addClass('show');
+                    $('#weekly_acti').removeClass('show').addClass('hidden');
+                    $('#monthly_acti').removeClass('show').addClass('hidden');
+                });
+                $('#a_weekly').click(function () {
+                    $('#weekly_acti').removeClass('hidden').addClass('show');
+                    $('#monthly_acti').removeClass('show').addClass('hidden');
+                    $('#daily_acti').removeClass('show').addClass('hidden');
+                });
+                $('#a_monthly').click(function () {
+                    $('#monthly_acti').removeClass('hidden').addClass('show');
+                    $('#weekly_acti').removeClass('show').addClass('hidden');
+                    $('#daily_acti').removeClass('show').addClass('hidden');
+                });
+            </script>
+
             <div id="daily_acti" class="panel panel-success hidden">
                 <div class="panel-heading">
                     <h3>Activities Daily</h3>
@@ -260,35 +289,13 @@
                 </table>
             </div>
 
-         <nav aria-label="...">
-            <ul class="pager">
-                <li id="a_daily"><a href="#">Daily</a> </li>
-                <li id="a_weekly"><a href="#">Weekly</a> </li>
-                <li id="a_monthly"><a href="#">Monthly</a> </li>
-            </ul>
-        </nav>
-        <script lang="text/javascript">
-            $('#a_daily').click(function () {
-                $('#daily_acti').removeClass('hidden').addClass('show');
-                $('#weekly_acti').removeClass('show').addClass('hidden');
-                $('#monthly_acti').removeClass('show').addClass('hidden');
-            });
-            $('#a_weekly').click(function () {
-                $('#weekly_acti').removeClass('hidden').addClass('show');
-                $('#monthly_acti').removeClass('show').addClass('hidden');
-                $('#daily_acti').removeClass('show').addClass('hidden');
-            });
-            $('#a_monthly').click(function () {
-                $('#monthly_acti').removeClass('hidden').addClass('show');
-                $('#weekly_acti').removeClass('show').addClass('hidden');
-                $('#daily_acti').removeClass('show').addClass('hidden');
-            });
-        </script>
         <button type="button" class="btn btn-info" onclick="toggle_visibility('pomodoro', 'activity_tracker')">Toggle pomodoro/activity</button>
         </div>
 
         <div class="padding"></div>
+
         <H1>Calendar</H1>
+
         <iframe src="{{data.calendar_id}}" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no"></iframe>
     </div>
 </div>
