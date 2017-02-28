@@ -42,6 +42,33 @@ html *{
 }
 
 
+.daily-panel{
+    background: #F6F6F6;
+    border-color: #6fa8aa;
+}
+
+.daily-panel > .panel-heading {
+    background: #6fa8aa;
+}
+
+.weekly-panel{
+    background: #F6F6F6;
+    border-color: #6faa71;
+}
+
+.weekly-panel > .panel-heading {
+    background: #6faa71;
+}
+
+.monthly-panel{
+    background: #F6F6F6;
+    border-color: #aa716f;
+}
+
+.monthly-panel > .panel-heading {
+    background: #aa716f;
+}
+
 #inactive{
     display: none;
 }
