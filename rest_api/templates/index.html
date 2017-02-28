@@ -22,20 +22,23 @@
                 </ul>
             </nav>
             <script lang="text/javascript">
-                $('#p_daily').click(function () {
+                $('#p_daily').click(function (e) {
                     $('#daily').removeClass('hidden').addClass('show');
                     $('#weekly').removeClass('show').addClass('hidden');
                     $('#monthly').removeClass('show').addClass('hidden');
+                    e.preventDefault();
                 });
-                $('#p_weekly').click(function () {
+                $('#p_weekly').click(function (e) {
                     $('#weekly').removeClass('hidden').addClass('show');
                     $('#monthly').removeClass('show').addClass('hidden');
                     $('#daily').removeClass('show').addClass('hidden');
+                    e.preventDefault();
                 });
-                $('#p_monthly').click(function () {
+                $('#p_monthly').click(function (e) {
                     $('#monthly').removeClass('hidden').addClass('show');
                     $('#weekly').removeClass('show').addClass('hidden');
                     $('#daily').removeClass('show').addClass('hidden');
+                    e.preventDefault();
                 });
             </script>
 
