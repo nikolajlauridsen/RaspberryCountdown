@@ -30,6 +30,10 @@
     text-shadow: 1px 1px #d4ddd7;
 }
 
+html *{
+    font-family: 'Raleway', sans-serif !important;
+}
+
 
 #inactive{
     display: none;
