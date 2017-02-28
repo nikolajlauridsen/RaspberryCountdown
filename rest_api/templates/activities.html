@@ -10,6 +10,12 @@
 <div class="col-md-2"></div>
 <div class="col-md-8">
 
+    <h1>New activity</h1>
+    <form action="/api/activities/" method="post">
+        Activity name (Max 16 characters): <input type="text" name="name" value="name" maxlength="16">
+        <input type="submit" value="submit">
+    </form>
+
     <div class="panel panel-success" id="active-table">
         <div class="panel-heading">
             <h2>Active activities</h2>
@@ -71,12 +77,9 @@
     </div>
 
     <button type="button" class="btn btn-info" onclick="toggle_visibility('active-table', 'inactive')">Toggle active/inactive activities</button>
+    <div class="padding"></div>
+    <div class="padding"></div>
 
-    <h1>New activity</h1>
-    <form action="/api/activities/" method="post">
-        Activity name (Max 16 characters): <input type="text" name="name" value="name" maxlength="16">
-        <input type="submit" value="submit">
-    </form>
 </div>
 <div class="col-md-2"></div>
 {% endblock %}
