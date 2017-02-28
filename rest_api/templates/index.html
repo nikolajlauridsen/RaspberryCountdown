@@ -176,20 +176,23 @@
                 </ul>
             </nav>
             <script lang="text/javascript">
-                $('#a_daily').click(function () {
+                $('#a_daily').click(function (e) {
                     $('#daily_acti').removeClass('hidden').addClass('show');
                     $('#weekly_acti').removeClass('show').addClass('hidden');
                     $('#monthly_acti').removeClass('show').addClass('hidden');
+                    e.preventDefault();
                 });
-                $('#a_weekly').click(function () {
+                $('#a_weekly').click(function (e) {
                     $('#weekly_acti').removeClass('hidden').addClass('show');
                     $('#monthly_acti').removeClass('show').addClass('hidden');
                     $('#daily_acti').removeClass('show').addClass('hidden');
+                    e.preventDefault();
                 });
-                $('#a_monthly').click(function () {
+                $('#a_monthly').click(function (e) {
                     $('#monthly_acti').removeClass('hidden').addClass('show');
                     $('#weekly_acti').removeClass('show').addClass('hidden');
                     $('#daily_acti').removeClass('show').addClass('hidden');
+                    e.preventDefault();
                 });
             </script>
 
