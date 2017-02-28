@@ -13,7 +13,8 @@ Made available under GNU GENERAL PUBLIC LICENSE
 # By DenisFromHR (Denis Pleic)
 # 2015-02-10, ver 0.1
 
-Then used by Nikolaj Lauridsen, without changes in TimeBuddy.
+Taken from: http://www.circuitbasics.com/raspberry-pi-i2c-lcd-set-up-and-programming/
+and used by Nikolaj Lauridsen, without changes in TimeBuddy (2016/17).
 """
 
 # i2c bus (0 -- original Pi, 1 -- Rev 2 Pi)
