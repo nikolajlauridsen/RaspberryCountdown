@@ -514,8 +514,8 @@ def tasks():
 
     context = {'active_tasks': active_tasks,
                'inactive_tasks': inactive_tasks,
-               'title': 'Tasks',
-               'tagline': 'Control panel'}
+               'title': 'Pomodoro',
+               'tagline': 'Task Control Panel'}
 
     return render_template('tasks.html', data=context)
 
@@ -536,7 +536,7 @@ def activities():
     context = {'active_tasks': active_activities,
                'inactive_tasks': inactive_activities,
                'title': 'TimeTracker',
-               'tagline': 'Activity control panel'}
+               'tagline': 'Activity Control Panel'}
 
     return render_template('activities.html', data=context)
 
