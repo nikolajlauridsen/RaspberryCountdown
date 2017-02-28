@@ -1,6 +1,6 @@
 # TimeBuddy
 
-![TimeBuddy](https://raw.githubusercontent.com/nikolajlauridsen/RaspberryTimebuddy/master/Documentation/Images/timebuddy.jpg
+![TimeBuddy](https://raw.githubusercontent.com/nikolajlauridsen/RaspberryTimebuddy/master/Documentation/Images/timebuddy.jpg)
 
 ## Project Background
 TimeBuddy is built as a part of a school project, the given subject is 
