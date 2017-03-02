@@ -81,12 +81,17 @@ html *{
     display: none;
 }
 
-.toggle{
-    height: 20px;
-    width: 10px;
-    display: inline;
-    background-color: antiquewhite;
+.btn-info{
+    background-color: #6f8baa;
+    border-color: #6f8baa;
+    margin: 0 auto;
 }
+
+.btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open>.dropdown-toggle.btn-info {
+    background-color: #afbfd0;
+    border-color: #6f8baa;
+}
+
 
 .hidden{
     display: none !important;
