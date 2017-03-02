@@ -42,30 +42,30 @@ html *{
 }
 
 
-.daily-panel{
+.blue-panel{
     background: #F6F6F6;
     border-color: #6fa8aa;
 }
 
-.daily-panel > .panel-heading {
+.blue-panel > .panel-heading {
     background: #6fa8aa;
 }
 
-.weekly-panel{
+.green-panel{
     background: #F6F6F6;
     border-color: #6faa71;
 }
 
-.weekly-panel > .panel-heading {
+.green-panel > .panel-heading {
     background: #6faa71;
 }
 
-.monthly-panel{
+.red-panel{
     background: #F6F6F6;
     border-color: #aa716f;
 }
 
-.monthly-panel > .panel-heading {
+.red-panel > .panel-heading {
     background: #aa716f;
 }
 
@@ -105,4 +105,3 @@ html *{
     position: absolute;
 
 }
-
