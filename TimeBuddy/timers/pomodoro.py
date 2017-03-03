@@ -111,7 +111,8 @@ class PomodoroTimer(CountDown):
         self.next_cycle = self.run_timer(self.study_t, 'Work')
         # Add the total cycles after the work timer but before the break
         # timer, this way the user won't get punished for stopping at a break
-        self.total_cycles += 1
+        if self.next_cycle:
+            self.total_cycles += 1
 
     def start_break(self, short):
         """Start a break timer"""
