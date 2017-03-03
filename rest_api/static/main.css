@@ -84,7 +84,6 @@ html *{
 .btn-info{
     background-color: #6f8baa;
     border-color: #6f8baa;
-    margin: 0 auto;
 }
 
 .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open>.dropdown-toggle.btn-info {
