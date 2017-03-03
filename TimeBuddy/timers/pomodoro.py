@@ -90,9 +90,11 @@ class PomodoroTimer(CountDown):
         return True
 
     def await_confirmation(self, message):
-        """Awaits confirmation from user returns true/false"""
+        """Wait for the user to press start, return false if the request
+         is denied"""
         self.screen.lcd_display_string(message.center(16, ' '), 1)
         self.screen.lcd_display_string('Press start'.center(16, ' '), 2)
+
         while not GPIO.event_detected(self.buttons['start']):
             if GPIO.event_detected(self.buttons['stop']):
                 return False
@@ -100,77 +102,112 @@ class PomodoroTimer(CountDown):
         return True
 
     def start_work(self):
+        """Start a work timer"""
         print('Starting study')
-        self.total_cycles += 1
+        # Swtich the leds.
         self.notifier.toggle_led(self.notifier.led_green, True)
         self.notifier.toggle_led(self.notifier.led_red, False)
+        # Start a work timer
         self.next_cycle = self.run_timer(self.study_t, 'Work')
+        # Add the total cycles after the work timer but before the break
+        # timer, this way the user won't get punished for stopping at a break
+        self.total_cycles += 1
 
     def start_break(self, short):
+        """Start a break timer"""
+        # Switch the leds.
         self.notifier.toggle_led(self.notifier.led_green, False)
         self.notifier.toggle_led(self.notifier.led_red, True)
         if short:
+            # start a cycle with a short break, and the message 'Break'
             print('Start short break')
             self.next_cycle = self.run_timer(self.short_break, 'Break')
+            # Add one to cycles
             self.cycle += 1
         else:
+            # Start a long break
             print('Start long break')
+            self.total_cycles += 1
             self.next_cycle = self.run_timer(self.long_break, 'Break')
+            # And then reset the counter
             self.cycle = 1
 
     def run_session(self, task):
         """Session loop, tracks sessions and start appropriate timers"""
+        # Save the start time and set the next cycle flag
         session_start = time.time()
         self.next_cycle = True
+
+        # If next_cycle returns false the timer should be stop
         while self.next_cycle:
+            # Wait for confirmation, it's important that the user shows
+            # his willingness to work
             self.next_cycle = self.await_confirmation('Confirm work')
+            # Having just updated next cycle we have to check it again
             if not self.next_cycle: break
 
             if self.cycle % 4 != 0:
+                # Short break time 4 times, start working!
                 self.start_work()
+                # Check if the user stopped the session while working
                 if self.next_cycle:
+                    # If they haven't, await for confirmation
                     self.next_cycle = self.await_confirmation('Confirm break')
                     if not self.next_cycle: break
+                    # And then start a break and go have coffee
+                    # True for short break
                     self.start_break(True)
                 else:
                     break
 
             else:
+                # This is the nice cycle, do some work
                 self.start_work()
                 if self.next_cycle:
                     self.next_cycle = self.await_confirmation('Confirm break')
                     if not self.next_cycle: break
+                    # And then get a nice long break
+                    # False for a long break
                     self.start_break(False)
                 else:
                     break
         self.finish_session(session_start, task)
 
     def finish_session(self, session_start, task):
-        # Session over
+        """Finish the pomodoro session, makes an entry to the API database
+        and creates a google calendar event"""
+        # Session over, clear screen and LEDs
         self.notifier.clear_leds()
-        self.screen.lcd_display_string('Session ended'.center(16, ' '), 1)
-        self.screen.lcd_display_string(' ' * 16, 2)
-        time.sleep(0.5)
-
+        # Tell the user that events are being created
         self.screen.lcd_display_string('Creating'.center(16, ' '), 1)
-        self.screen.lcd_display_string('calendar event'.center(16, ' '), 2)
-        session_end = time.time()
+        self.screen.lcd_display_string('events'.center(16, ' '), 2)
+
+        # Save events if we're not debugging
         if not self.debug:
+            session_end = time.time()
             duration = session_end-session_start
-            if duration > 10:
+            # Don't save overly short sessions
+            if duration > 60:
+                # Create stamps and strings
                 stamp = self.seconds_to_timestamp(duration)
                 summary = 'Task: ' + task
-                description = 'Pomodoro Session\nDuration: '\
-                              + stamp + 'Cycles: ' + str(self.total_cycles)\
-                              + '\nTask: ' + task
+                description = 'Pomodoro Session\nDuration: ' + stamp + \
+                              '\nCycles: ' + str(self.total_cycles) + \
+                              '\nTask: ' + task
+
+                # Create API event and google calendar event
                 self.calendar.create_event(summary, session_start,
                                            session_end, description)
                 self.api_handler.save_session(session_start, session_end,
                                               self.total_cycles, task)
 
+            # Let the user know we're done saving events
             self.screen.lcd_display_string('Session saved'.center(16, ' '), 1)
             self.screen.lcd_display_string(' ' * 16, 2)
+        # Reset the cycle counter
         self.total_cycles = 0
+        # Wait just a bit so the user has a chance to read the message
+        # on the screen
         time.sleep(0.5)
         print('Session finished')
 
@@ -187,22 +224,35 @@ class PomodoroTimer(CountDown):
 
     def main(self):
         """Main loop, displays title and awaits input, then runs a session"""
+        # Get the tasks we're gonna let the user choose between as an array
         tasks = self.api_handler.get_tasks("active")
+        # Create the cursor pointing to a task in the array
         cursor = 0
+
+        # Create the "cursor" the user sees, it looks like: Message      1/4
+        # Message to displayed on the far left
         message = 'Choose task'
+        # Generate the cursor string
         cursor_string = self.generate_cursor(message, cursor + 1, len(tasks))
+
+        # Pomodoro main loop
         while True:
+            # Update the screen
             self.screen.lcd_display_string(cursor_string, 1)
             self.screen.lcd_display_string(tasks[cursor]["name"].center(16, ' '), 2)
 
+            # Handle buttons pushes
             if GPIO.event_detected(self.buttons['start']):
                 print('session')
+                # Run the selected task, passing the name of the task to be
+                # displayed on the screen
                 self.run_session(tasks[cursor]["name"])
                 # Update tasks after ended session, thus making sure
                 # a user doesn't accidentally pick an inactive task
                 tasks = self.api_handler.get_tasks("active")
 
             elif GPIO.event_detected(self.buttons['forward']):
+                # Move the cursor one to the right, and update cursor string
                 if cursor < len(tasks)-1:
                     cursor += 1
                 else:
@@ -212,6 +262,7 @@ class PomodoroTimer(CountDown):
                                                      len(tasks))
 
             elif GPIO.event_detected(self.buttons['back']):
+                # Same as forward, just move it back instead
                 if cursor > 0:
                     cursor -= 1
                 else:
@@ -219,6 +270,10 @@ class PomodoroTimer(CountDown):
                 cursor_string = self.generate_cursor(message, cursor + 1,
                                                      len(tasks))
 
+            # The user is a lazy person and no longer want's to work.
+            # May it's family be forever disappointed,
             elif GPIO.event_detected(self.buttons['stop']):
                 break
+
+            # Let's chill homie!
             time.sleep(0.2)
