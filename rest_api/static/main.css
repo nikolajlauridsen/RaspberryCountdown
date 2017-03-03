@@ -93,8 +93,14 @@ html *{
     border-radius: 24px;
 }
 
+.btn-default:hover{
+    color: #23527C;
+    border-radius: 24px;
+}
+
 .btn:focus, .btn:active:focus, .btn.active:focus {
     outline: 0 none;
+    color: #23527C;
 }
 
 .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open>.dropdown-toggle.btn-info {
