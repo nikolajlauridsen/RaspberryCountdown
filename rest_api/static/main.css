@@ -86,6 +86,13 @@ html *{
     border-color: #6f8baa;
 }
 
+/* #2F87C6 button text color */
+
+.btn-default{
+    color: #2F87C6;
+    border-radius: 24px;
+}
+
 .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open>.dropdown-toggle.btn-info {
     background-color: #afbfd0;
     border-color: #6f8baa;
