@@ -137,6 +137,8 @@ def get_activity_breakdown(activity_data, span=7):
             if datapoint['activity'] == activity['name']:
                 activity['duration'] += datapoint['duration']
                 activity['count'] += 1
+                activity['avgdaily'] = seconds_to_timestamp(
+                    (activity['duration'] / span))
     formatted_data = []
     duration_sum = 0
     total_count = 0
@@ -167,7 +169,7 @@ def get_activity_breakdown(activity_data, span=7):
         }
         return context
     else:
-        return []
+        return {}
 
 
 def get_task_breakdown(session_data):

@@ -243,6 +243,7 @@
                         <th>Count</th>
                         <th>Duration</th>
                         <th>Average session duration</th>
+                        <th>Daily time spent on activity</th>
                     </tr>
                     {% for activity in data.weekly_activities.breakdown %}
                     <tr>
@@ -250,6 +251,7 @@
                         <th>{{ activity.count }}</th>
                         <th>{{ activity.durationString }}</th>
                         <th>{{ activity.avgduration }}</th>
+                        <th>{{ activity.avgdaily }}</th>
                     </tr>
                     {% else %}
                     <tr>
@@ -261,6 +263,7 @@
                         <th>{{ data.weekly_activities.total_count }}</th>
                         <th>{{ data.weekly_activities.duration_sum }}</th>
                         <th>{{ data.weekly_activities.avg_duration }}</th>
+                        <th>N/A</th>
                     </tr>
                 </table>
             </div>
@@ -275,6 +278,7 @@
                         <th>Count</th>
                         <th>Duration</th>
                         <th>Average session duration</th>
+                        <th>Daily time spent on activity</th>
                     </tr>
                     {% for activity in data.monthly_activities.breakdown %}
                     <tr>
@@ -282,6 +286,7 @@
                         <th>{{ activity.count }}</th>
                         <th>{{ activity.durationString }}</th>
                         <th>{{ activity.avgduration }}</th>
+                        <th>{{ activity.avgdaily }}</th>
                     </tr>
                     {% else %}
                     <tr>
@@ -293,6 +298,7 @@
                         <th>{{ data.monthly_activities.total_count }}</th>
                         <th>{{ data.monthly_activities.duration_sum }}</th>
                         <th>{{ data.monthly_activities.avg_duration }}</th>
+                        <th>N/A</th>
                     </tr>
                 </table>
             </div>
