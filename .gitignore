@@ -10,3 +10,6 @@ client_secret.json
 calendar_id.txt
 myenv/*
 .idea/*
+*.sdr
+*.fzz
+ProjectReport.*
